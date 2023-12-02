@@ -1,0 +1,1 @@
+Chunks serve as different "sections" of a cell, this is important when it is meant to be explored like the Forest.

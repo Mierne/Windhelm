@@ -1,0 +1,1 @@
+This file contains a list of items that will be discoverable when exploring both Chunk 1 & 2.
