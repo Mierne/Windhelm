@@ -1,12 +1,15 @@
 @ECHO OFF
 TITLE Exploration Engine - Rockwinn Plaza ^| NAME: %player_name% ^| CLASS: %player_class%
-REM RWP.BAT (Rockwinn Plaza Cell) v1 231201
+REM RWP.BAT (Rockwinn Plaza Cell) v1 231202
 
 REM Unique NPC encounter chance (RARE).
 :RNPCE
 SET /A RE=%RANDOM% %%20
 IF %RE% EQU 2 (
     REM Unique Encounter.
+    IF %GRMencountered% EQU 1 (
+        GOTO :RWP_main
+    )
     GOTO :RWP_UE
 ) ELSE (
     GOTO :RWP_main
@@ -19,7 +22,7 @@ CLS
 ECHO.
 TYPE "TITLE\PATH\HERE"
 ECHO.
-ECHO                                 A busy street, you notice a Bard advertising his services.
+ECHO                             You enter the busy street, you notice a Bard advertising his services.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO +                                 HP / %hp% ^| COINS / %coins% ^| ARMOR / %armor_equip% ^| LEVELS / %levels%
 ECHO + %displayMessage%
