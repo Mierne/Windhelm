@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load, Order and initialization Program (SLOP)
-REM Save, Load, Order and initialization Program v1.0 231201 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231202 - For Build 2 "Bottle o' Features"
 
 REM Check for the given reason this script was called
 :callCheck
@@ -47,16 +47,6 @@ ECHO %AFFC1_B%
 ECHO %wpn_e%
 ECHO %shd_e%
 ECHO %amr_e%
-ECHO %LC%
-ECHO %CPD%
-ECHO %C1P1NM%
-ECHO %C1P1SM%
-ECHO %C1P1EM%
-ECHO %C1P1WM%
-ECHO %C2P1NM%
-ECHO %C2P1SM%
-ECHO %C2P1EM%
-ECHO %C2P1WM%
 ECHO %LL%
 ECHO %PM1name%
 ECHO %PM2name%
@@ -70,6 +60,9 @@ ECHO %PM3ATK%
 ECHO %PM1OC%
 ECHO %PM2OC%
 ECHO %PM3OC%
+ECHO %CBWencountered%
+ECHO %GBAencountered%
+ECHO %GRMencountered%
 )>"%cd%\data\player\Player Stats.txt"
 GOTO :PLAYER_SAVE_TOOLS
 
@@ -182,16 +175,6 @@ SET /P AFFC1_B=
 SET /P wpn_e=
 SET /P shd_e=
 SET /P amr_e=
-SET /P LC=
-SET /P CPD=
-SET /P C1P1NM=
-SET /P C1P1SM=
-SET /P C1P1EM=
-SET /P C1P1WM=
-SET /P C2P1NM=
-SET /P C2P1SM=
-SET /P C2P1EM=
-SET /P C2P1WM=
 SET /P LL=
 SET /P PM1name=
 SET /P PM2name=
@@ -205,6 +188,9 @@ SET /P PM3ATK=
 SET /P PM1OC=
 SET /P PM2OC=
 SET /P PM3OC=
+SET /P CBWencountered=
+SET /P GBAencountered=
+SET /P GRMencountered=
 )<"%cd%\data\player\Player Stats.txt"
 GOTO :PLAYER_LOAD_TOOLS
 
@@ -356,20 +342,6 @@ SET defeat_hunter_achievement=0
 REM Affinity Check
 SET AFFC1_B=0
 REM Player positions
-REM "LC" is for "Last Chunk" positions.
-REM "CPD" is for the direction the player when in said chunk.
-SET LC=1
-SET CPD=1
-REM Chunk movement stores.
-SET C1P1NM=3
-SET C1P1SM=3
-SET C1P1EM=3
-SET C1P1WM=3
-SET C2P1NM=3
-SET C2P1SM=3
-SET C2P1EM=3
-SET C2P1WM=3
-REM Player Location
 SET LL=WP
 REM Set default Party information.
 SET PM1name=VACANT
@@ -385,6 +357,10 @@ REM The associated party member's "occupation".
 SET PM1OC=NONE
 SET PM2OC=NONE
 SET PM3OC=NONE
+REM Prevent encountering rare NPCs repeatedly.
+SET CBWencountered=0
+SET GBAencountered=0
+SET GRMencountered=0
 GOTO :PLAYER_INIT_INVENTORY
 
 REM Creates empty inventory slots
