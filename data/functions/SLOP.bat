@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load, Order and initialization Program (SLOP)
-REM Save, Load, Order and initialization Program v1.0 231202 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231207 - For Build 2 "Bottle o' Features"
 
 REM Check for the given reason this script was called
 :callCheck
@@ -54,15 +54,32 @@ ECHO %PM3name%
 ECHO %PM1HP%
 ECHO %PM2HP%
 ECHO %PM3HP%
+ECHO %PM1DS%
+ECHO %PM1SS%
+ECHO %PM1MS%
+ECHO %PM2DS%
+ECHO %PM2SS%
+ECHO %PM2MS%
+ECHO %PM3DS%
+ECHO %PM3SS%
+ECHO %PM3MS%
 ECHO %PM1ATK%
 ECHO %PM2ATK%
 ECHO %PM3ATK%
 ECHO %PM1OC%
 ECHO %PM2OC%
 ECHO %PM3OC%
+ECHO %PARTY_SLOT_1%
+ECHO %PARTY_SLOT_2%
+ECHO %PARTY_SLOT_3%
 ECHO %CBWencountered%
 ECHO %GBAencountered%
 ECHO %GRMencountered%
+ECHO %personal_p_1%
+ECHO %personal_p_2%
+ECHO %possesive_1%
+ECHO %reflexive_1%
+ECHO %intensive_1%
 )>"%cd%\data\player\Player Stats.txt"
 GOTO :PLAYER_SAVE_TOOLS
 
@@ -182,15 +199,32 @@ SET /P PM3name=
 SET /P PM1HP=
 SET /P PM2HP=
 SET /P PM3HP=
+SET /P PM1DS=
+SET /P PM1SS=
+SET /P PM1MS=
+SET /P PM2DS=
+SET /P PM2SS=
+SET /P PM2MS=
+SET /P PM3DS=
+SET /P PM3SS=
+SET /P PM3MS=
 SET /P PM1ATK=
 SET /P PM2ATK=
 SET /P PM3ATK=
 SET /P PM1OC=
 SET /P PM2OC=
 SET /P PM3OC=
+SET /P PARTY_SLOT_1=
+SET /P PARTY_SLOT_2=
+SET /P PARTY_SLOT_3=
 SET /P CBWencountered=
 SET /P GBAencountered=
 SET /P GRMencountered=
+SET /P personal_p_1=
+SET /P personal_p_2=
+SET /P possesive_1=
+SET /P reflexive_1=
+SET /P intensive_1=
 )<"%cd%\data\player\Player Stats.txt"
 GOTO :PLAYER_LOAD_TOOLS
 
@@ -350,9 +384,22 @@ SET PM3name=VACANT
 SET PM1HP=0
 SET PM2HP=0
 SET PM3HP=0
+REM Party member skill levels, currently only supports damage, stamina and magicka.
+SET PM1DS=0
+SET PM1SS=0
+SET PM1MS=0
+SET PM2DS=0
+SET PM2SS=0
+SET PM2MS=0
+SET PM3DS=0
+SET PM3SS=0
+SET PM3MS=0
 SET PM1ATK=0
 SET PM2ATK=0
 SET PM3ATK=0
+SET PARTY_SLOT_1=0
+SET PARTY_SLOT_2=0
+SET PARTY_SLOT_3=0
 REM The associated party member's "occupation".
 SET PM1OC=NONE
 SET PM2OC=NONE
