@@ -2,7 +2,6 @@
 TITLE Iridescent Forest (EXPLORE) - Chunk 1
 REM Chunk 1 (231202)
 REM --
-
 REM Chunk 1 contains low-level enemies, such as the Bandit and Jester.
 REM This chunk also contains several NPCs important to the story, and will help guide the Player.
 
@@ -23,6 +22,10 @@ IF ERRORLEVEL 1 GOTO :MOVEMENT_CHECK
 
 REM Checks the Players HP to prevent instant-death in an encounter.
 :MOVEMENT_CHECK
+REM Debug move
+SET currentEnemy=iBandit
+CALL "%cd%\data\Combat Engine\scripts\var_handler.bat"
+REM - - Debug move end
 IF %HP% LSS 50 (
     GOTO :HPTL
 ) ELSE (
