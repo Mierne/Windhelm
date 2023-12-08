@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Windhelm ^| Exploration Engine ^| Name: %player_name% ^| Class: %player_class%
-REM Exploration Engine v1 (231201)
+REM Exploration Engine v1 (231207)
 REM --
 
 REM Where was the Player last at when the game was saved?
@@ -33,7 +33,7 @@ ECHO.
 ECHO Where would you like to go?
 ECHO %displayMessage%
 ECHO =====================================================================================================
-ECHO [1 / Windhelm Southern Gate ] ^| [2 / Rockwinn Plaza ] ^|[3 / Windhelm High Quater ] ^| [E / EXIT]
+ECHO [1 / Windhelm Southern Gate ] ^| [2 / Rockwinn Plaza ] ^|[3 / Windhelm High Quarter ] ^| [E / EXIT]
 ECHO [4 / Windhelm Mud Quarter ]   ^| [5 / Leave Windhelm ]
 CHOICE /C 12345E /N /M ">"
 IF ERRORLEVEL 6 GOTO :EOF
@@ -48,7 +48,7 @@ REM This area is contained within the Windhelm Castle, there is (0%) chance to e
 :WHQec
 GOTO :WHQ
 
-REM Windhelm High Quater. Contains the following interactable NPCs:
+REM Windhelm High Quarter. Contains the following interactable NPCs:
 REM Wizard, Clarke Blackwell (recruitable NPC)
 :WHQ
 SET LL=WHQ
@@ -104,5 +104,6 @@ IF ERRORLEVEL 2 GOTO :IDF
 IF ERRORLEVEL 1 GOTO :WindhelmPlaza
 
 REM Enters the "Iridescent Forest" cell, allowing exploration.
-CALL "%cd%\data\functions\Exploration Engine\Cells\Iridescent Forest\Chunk1.bat"
+:IDF
+CALL "%cd%\data\Exploration Engine\Cells\Iridescent Forest\Chunk1.bat"
 GOTO :EOF
