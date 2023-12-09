@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load, Order and initialization Program (SLOP)
-REM Save, Load, Order and initialization Program v1.0 231207 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231209 - For Build 2 "Bottle o' Features"
 
 REM Check for the given reason this script was called
 :callCheck
@@ -69,6 +69,12 @@ ECHO %PM3ATK%
 ECHO %PM1OC%
 ECHO %PM2OC%
 ECHO %PM3OC%
+ECHO %PM1STM%
+ECHO %PM2STM%
+ECHO %PM3STM%
+ECHO %PM1MGK%
+ECHO %PM2MGK%
+ECHO %PM3MGK%
 ECHO %PARTY_SLOT_1%
 ECHO %PARTY_SLOT_2%
 ECHO %PARTY_SLOT_3%
@@ -214,6 +220,12 @@ SET /P PM3ATK=
 SET /P PM1OC=
 SET /P PM2OC=
 SET /P PM3OC=
+SET /P PM1STM=
+SET /P PM2STM=
+SET /P PM3STM=
+SET /P PM1MGK=
+SET /P PM2MGK=
+SET /P PM3MGK=
 SET /P PARTY_SLOT_1=
 SET /P PARTY_SLOT_2=
 SET /P PARTY_SLOT_3=
@@ -397,6 +409,12 @@ SET PM3MS=0
 SET PM1ATK=0
 SET PM2ATK=0
 SET PM3ATK=0
+SET PM1STM=0
+SET PM2STM=0
+SET PM3STM=0
+SET PM1MGK=0
+SET PM2MGK=0
+SET PM3MGK=0
 SET PARTY_SLOT_1=0
 SET PARTY_SLOT_2=0
 SET PARTY_SLOT_3=0
