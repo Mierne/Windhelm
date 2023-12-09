@@ -1,9 +1,10 @@
 @ECHO OFF
 TITLE Exploration Engine - Windhelm High Quarter ^| NAME: %player_name% ^| CLASS: %player_class%
-REM WHQ.BAT v1 (231202)
+REM WHQ.BAT v1 (2312029)
 
 REM Unique NPC encounter chance (RARE).
 :RNPCE
+GOTO :WHQ_UE
 SET /A RE=%RANDOM% %%20
 IF %RE% EQU 2 (
     REM Unique Encounter.
@@ -24,7 +25,7 @@ TYPE "TITLE\PATH\HERE"
 ECHO.
 ECHO                           You notice a strange figure floating above a stack of crates.
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO +                                 HP / %hp% ^| COINS / %coins% ^| ARMOR / %armor_equip% ^| LEVELS / %levels%
+ECHO +                                 HP: %hp% ^| COINS: %coins% ^| AMR: %armor_equip% ^| LVLS: %levels%
 ECHO + %displayMessage%
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO                   [1 / LOREKEEPER ] ^| [2 / WIZARD ] ^| [4 / Approach the figure ] ^| [E / GO BACK ]
