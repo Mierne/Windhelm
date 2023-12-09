@@ -1,6 +1,7 @@
 @ECHO OFF
-TITLE Combat Engine 7 - "Battle for Itor"
-REM Combat Engine 7 (v7.0 231201) - Combat Engine for Build 2 "Bottle o' Features"
+TITLE Combat Engine 7 - "Shi'a'loh"
+MODE con: cols=120 lines=25
+REM Combat Engine 7 (v7.0 231209) - Combat Engine for Build 2 "Bottle o' Features"
 
 REM Set enemy names with the location identifier and set the schrodinger's variables.
 SET curEn=%currentEnemy%
@@ -49,7 +50,7 @@ IF %curEn% == iBandit (
 
 REM Enemy Battle Screen. This is the modular part I talked about. btw.
 :EBS
-TITLE CE v7 - %curEn% VS. %player_name% ^| %player_class%
+TITLE CE v7 - %curEn% VS. %player_name% the %player_class%
 REM Reset the attack value after armor calculation to prevent negative damage values.
 SET enAT=%enATb%
 REM Win/Lose check.
@@ -61,27 +62,28 @@ REM Write the data from the text file to the CLI.
 TYPE "%cd%\data\ascii\enemies\%curEn%.txt"
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^|                             HP: %enHP% ^| ATK: %enAT% ^| RES WKN: %enWK%
+ECHO ^|                             HP: %enHP% ^| ATK: %enAT% ^| STM: %enST%
 ECHO ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %HP% ^| AP: %pAP%
-ECHO ^| ATK %player_damage% ^| STM %stamina% ^| ARM: %armor_equip%
-ECHO ^| %PM1name%: %PM1HP% ^| %PM2name%: %PM2HP% ^| %PM3name%: %PM3HP%
-ECHO ^| %PM1name% ATK: %PM1ATK% ^| %PM2name% ATK: %PM2ATK% ^| %PM3ATK% ATK: %PM3ATK%
-ECHO ^| %plrMessage%
+ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| [I] ITEMS  ^| [S] Skip    ^|                                                                       +
+ECHO ^| HP: %HP% ^| STM: %stamina% ^| ATK: %player_damage% ^| AMR: %armor_equip% ^| MGK: %magicka% ^| AP %pAP%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| PARTY 1: %PM1name% ^| HP: %PM1HP% ^| ATK: %PM1ATK% ^| STM: %PM1STM% ^| MGK: %PM1MGK%
+ECHO ^| PARTY 2: %PM2name% ^| HP: %PM2HP% ^| ATK: %PM2ATK% ^| STM: %PM2STM% ^| MGK: %PM2MGK%
+ECHO ^| PARTY 3: %PM3name% ^| HP: %PM3HP% ^| ATK: %PM3ATK% ^| STM: %PM3STM% ^| MGK: %PM3MGK%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| [I] ITEMS  ^| [E] END     ^| %plrMessage%
 ECHO ^|            ^|             ^|                                                                       +
 ECHO ^| [A] ATTACK ^| [F] FLEE    ^|                                                                       +
 ECHO +--------------------------------------------------------------------------------------------------+
-CHOICE /C IASF /N /M ">"
+CHOICE /C IAEF /N /M ">"
 IF ERRORLEVEL 4 GOTO :flee_chance
-IF ERRORLEVEL 3 GOTO :armor_calculation
+IF ERRORLEVEL 3 GOTO :party_member_preattack_check
 IF ERRORLEVEL 2 GOTO :player_attack_calculation
 IF ERRORLEVEL 1 GOTO :gINV
 
-REM Combat Engine v6 Koritsu combined damage calcuation system.
-REM Could probably make the shield calculations their own function to prevent having to paste the same string twice.
+REM Combat Engine v7 "Turn Based" overhaul.
 
 :player_attack_calculation
 REM Modifies stamina consumption based on the shield and weapon combo equipped.
@@ -135,17 +137,67 @@ IF %PATT% GTR 17 (
     SET /A enHP=!enHP! -%player_damage%*%damage_skill%*2
     REM Display the following message in the "plrMessage" space.
     SET plrMessage=Critical hit on the %currentEnemy%!
-    GOTO :armor_calculation
+    GOTO :party_member_preattack_check
 ) ELSE IF %PATT% LSS 5 (
     REM Player attack misses.
     SET plrMessage=The %currentEnemy% dodged your attack!
-    GOTO :armor_calculation
+    GOTO :party_member_preattack_check
 ) ELSE (
      REM Modifies enemy "enHP" variable.
     SET /A enHP=!enHP! -%player_damage%*%damage_skill%
     REM Display the following message in the "plrMessage" space.
     SET plrMessage=You hit the %currentEnemy%!
-    GOTO :armor_calculation
+    GOTO :party_member_preattack_check
+)
+
+REM Checks if there are any party members, and allow them to attack if so.
+:party_member_preattack_check
+IF %PM1name% == VACANT (
+    IF %PM2name% == VACANT (
+        IF %PM3name% == VACANT (
+            REM No party members, skip their attacks.
+            GOTO :armor_calculation
+        ) ELSE (
+            REM Do Party member 3's attack only.
+            SET PARTY_SLOT_3=1
+            REM Debug skip.
+            GOTO :armor_calculation
+            GOTO :PM3attack_calculation
+        )
+    ) ELSE (
+        IF %PM3name% == VACANT (
+            REM Do Party Member 2's attack only.
+            SET PARTY_SLOT_3=0
+            REM Debug skip.
+            GOTO :armor_calculation
+            GOTO :PM2attack_calculation
+        )
+    )
+) ELSE (
+    IF %PM2name% == VACANT (
+        SET PARTY_SLOT_2=0
+        IF %PM3name% == VACANT (
+            REM Do Party Member 1's attack only.
+            SET PARTY_SLOT_3=0
+            REM Debug skip.
+            GOTO :armor_calculation
+            GOTO :PM1attack_calculation
+        ) ELSE (
+            REM Do Party Member 1 & 3's attacks only.
+            SET PARTY_SLOT_3=1
+            REM Debug skip.
+            GOTO :armor_calculation
+            GOTO :PM1attack_calculation
+        )
+    ) ELSE (
+        IF %PM3name% == VACANT (
+            REM Do Party Member 1 & 2's attacks only.
+            SET PARTY_SLOT_2=0
+            REM Debug skip.
+            GOTO :armor_calculation
+            GOTO :PM1attack_calculation
+        )
+    )
 )
 
 :armor_calculation
