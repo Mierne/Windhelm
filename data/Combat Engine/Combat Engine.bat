@@ -1,8 +1,8 @@
 @ECHO OFF
 TITLE Combat Engine 7 - "Shi'a'loh"
 MODE con: cols=120 lines=25
-REM Combat Engine 7 (v7.0 231209) - Combat Engine for Build 2 "Bottle o' Features"
-
+REM Combat Engine 7 (v7.0 231213) - Combat Engine for Build 2 "Bottle o' Features"
+GOTO :T
 REM Set enemy names with the location identifier and set the schrodinger's variables.
 SET curEn=%currentEnemy%
 IF %curEn% == iBandit (
@@ -67,26 +67,112 @@ ECHO ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO.
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO ^| HP: %HP% ^| STM: %stamina% ^| ATK: %player_damage% ^| AMR: %armor_equip% ^| MGK: %magicka% ^| AP %pAP%
+ECHO ^| HP: %HP% ^| STM: %stamina% ^| ATK: %player_damage% ^| AMR: %armor_equip% ^| MGK: %magicka% ^| AP %player_action_p%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| PARTY 1: %PM1name% ^| HP: %PM1HP% ^| ATK: %PM1ATK% ^| STM: %PM1STM% ^| MGK: %PM1MGK%
 ECHO ^| PARTY 2: %PM2name% ^| HP: %PM2HP% ^| ATK: %PM2ATK% ^| STM: %PM2STM% ^| MGK: %PM2MGK%
 ECHO ^| PARTY 3: %PM3name% ^| HP: %PM3HP% ^| ATK: %PM3ATK% ^| STM: %PM3STM% ^| MGK: %PM3MGK%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| [I] ITEMS  ^| [E] END     ^| %plrMessage%
-ECHO ^|            ^|             ^|                                                                       +
-ECHO ^| [A] ATTACK ^| [F] FLEE    ^|                                                                       +
+ECHO ^|            ^|             ^| [F] FLEE                                                              +
+ECHO ^| [A] ATTACK ^| [H] HVY ATK ^|                                                                       +
 ECHO +--------------------------------------------------------------------------------------------------+
-CHOICE /C IAEF /N /M ">"
-IF ERRORLEVEL 4 GOTO :flee_chance
+CHOICE /C IAEHF /N /M ">"
+IF ERRORLEVEL 5 GOTO :flee_chance
+IF ERRORLEVEL 4 GOTO :H_AP_calc
 IF ERRORLEVEL 3 GOTO :party_member_preattack_check
-IF ERRORLEVEL 2 GOTO :player_attack_calculation
+IF ERRORLEVEL 2 GOTO :L_AP_calc
 IF ERRORLEVEL 1 GOTO :gINV
 
-REM Combat Engine v7 "Turn Based" overhaul.
+REM Combat Engine v7 "Action Point" System
 
+REM Action Point logic for Light ("Normal") attacks.
+:L_AP_calc
+REM First check the level of the "Damage Skill" which determines both damage and AP level - this is definitely going to be changed later.
+REM Check for Max Level Damage Skill.
+IF %damage_skill% EQU 6 (
+    REM Max level Damage Skill; Light Attacks will consume 2 action points.
+    IF %player_action_p% LSS 2 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -2
+        GOTO :player_attack_calculation
+    )
+) ELSE IF %damage_skill% EQU 5 (
+    REM Level 5 Damage Skill; Light Attacks will consume 3 action points.
+    IF %player_action_p% LSS 3 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -3
+        GOTO :player_attack_calculation
+    )
+) ELSE IF %damage_skill% EQU 4 (
+    REM Level 4 Damage Skill; Light Attacks will consume 4 action points.
+    IF %player_action_p% LSS 4 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -4
+        GOTO :player_attack_calculation
+    )
+) ELSE (
+    REM Level 2 & 3 Damage Skill; consumption for Light Attacks at skill level 2 is 5.
+    IF %player_action_p% LSS 5 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :player_attack_calculation
+    )
+)
+
+REM Action Point logic for Heavy ("Special") attacks.
+:H_AP_calc
+REM First check the level of the "Damage Skill" which determines both damage and AP level - this is definitely going to be changed later.
+REM Check for Max Level Damage Skill.
+IF %damage_skill% EQU 6 (
+    REM Max level Damage Skill; Heavy Attacks will consume 8 action points.
+    IF %player_action_p% LSS 8 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -8
+        GOTO :player_attack_calculation
+    )
+) ELSE IF %damage_skill% EQU 5 (
+    REM Level 5 Damage Skill; Heavy Attacks will consume 11 action points.
+    IF %player_action_p% LSS 11 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -11
+        GOTO :player_attack_calculation
+    )
+) ELSE IF %damage_skill% EQU 4 (
+    REM Level 4 Damage Skill; Heavy Attacks will consume 12 action points.
+    IF %player_action_p% LSS 12 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -12
+        GOTO :player_attack_calculation
+    )
+) ELSE (
+    REM Level 2 & 3 Damage Skill; consumption for Heavy Attacks at skill level 2 is 15.
+    IF %player_action_p% LSS 15 (
+        SET plrMessage=You don't have enough action points!
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! -15
+        GOTO :player_attack_calculation
+    )
+)
+
+REM Run Stamina & Equipment effect checks.
 :player_attack_calculation
-REM Modifies stamina consumption based on the shield and weapon combo equipped.
+REM Adjusts stamina consumption based on the shield and weapon combo equipped.
 REM Find the equipped shield
 IF %shd_e% == BronzeBuckler (
     REM Find the equipped weapon
@@ -227,14 +313,46 @@ IF %attack_type% == Ranged (
 IF %AAT% GTR 17 (
     SET /A hp=!hp! -%enAT%*2
     SET displayMessage=The %currentEnemy% got a crit!
-    GOTO :EBS
+    GOTO :APR
 ) ELSE IF %AAT% LSS 5 (
     SET displayMessage=The %currentEnemy% narrowly missed!
-    GOTO :EBS
+    GOTO :APR
 ) ELSE (
     SET /A hp=!hp! -%enAT%
     SET displayMessage=The %currentEnemy% hit you!
+    GOTO :APR
+)
+
+REM "Action Point Regeneration", returns Action Points to the Player based on Damage Skill level.
+:APR
+IF %damage_skill% EQU 6 (
+    REM Return 12 APs to the Player.
+    SET /A player_action_p=!player_action_p! +12
     GOTO :EBS
+) ELSE IF %damage_skill% EQU 5 (
+    REM Return 11 APs to the Player.
+    SET /A player_action_p=!player_action_p! +11
+    GOTO :EBS
+) ELSE IF %damage_skill% EQU 4 (
+    REM Return 10 APs to the Player.
+    SET /A player_action_p=!player_action_p! +10
+    GOTO :EBS
+) ELSE IF %damage_skill% EQU 3 (
+    REM Return 8 APs to the Player.
+    SET /A player_action_p=!player_action_p! +8
+    GOTO :EBS
+) ELSE IF %damage_skill% EQU 2 (
+    REM Return 6 APs to the Player.
+    SET /A player_action_p=!player_action_p! +6
+    GOTO :EBS
+) ELSE (
+    REM ERROR HANDLING
+    :T
+    ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
+    ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
+    SET errorType=attributeSkill
+    CALL "%cd%\data\functions\Error Handler.bat"
+    EXIT /B
 )
 
 REM Chance based escape.
