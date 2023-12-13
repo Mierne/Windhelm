@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load, Order and initialization Program (SLOP)
-REM Save, Load, Order and initialization Program v1.0 231209 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231213 - For Build 2 "Bottle o' Features"
 
 REM Check for the given reason this script was called
 :callCheck
@@ -27,12 +27,14 @@ ECHO %LEVELS%
 ECHO %MAGICKAMAX%
 ECHO %STAMINAMAX%
 ECHO %HPMAX%
+ECHO %player_action_p%
 ECHO %weapon_type%
 ECHO %player_name%
 ECHO %player_class%
 ECHO %player_damage%
 ECHO %armor_equip%
 ECHO %stamina_equip%
+ECHO %actionpoint_equip%
 ECHO %damage_skill%
 ECHO %stamina_skill%
 ECHO %magicka_skill%
@@ -178,12 +180,14 @@ SET /P LEVELS=
 SET /P MAGICKAMAX=
 SET /P STAMINAMAX=
 SET /P HPMAX=
+SET /P player_action_p=
 SET /P weapon_type=
 SET /P player_name=
 SET /P player_class=
 SET /P player_damage=
 SET /P armor_equip=
 SET /P stamina_equip=
+SET /P actionpoint_equip=
 SET /P damage_skill=
 SET /P stamina_skill=
 SET /P magicka_skill=
@@ -365,6 +369,7 @@ SET LEVELS=0
 SET MAGICKAMAX=100
 SET STAMINAMAX=100
 SET HPMAX=100
+SET player_action_p=20
 SET weapon_type=Melee
 REM Used to modify the stamina level when equipping armor and such.
 SET maxStam=100
@@ -373,6 +378,7 @@ REM Functions exactly like the old EAV variable, it's just the armor value.
 SET armor_equip=0
 REM Functions like the armor variable, but for Stamina. When I have "equipped" items implemented better in the future, probably wont need this variable, but for now it is needed.
 SET stamina_equip=0
+SET actionpoint_equip=0
 SET damage_skill=2
 SET stamina_skill=2
 SET magicka_skill=2
