@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Windhelm - Character Creation
-REM Character Creator v1.3.0 (231209) for Build 2 "Bottle o' Features"
+REM Character Creator v1.3.1 (231213) for Build 2 "Bottle o' Features"
 
 REM Does Player data already exist? If so, overwrite it?
 IF EXIST "%cd%\data\player\Player Stats.txt" (
@@ -103,7 +103,7 @@ ECHO.
 TYPE "%cd%\data\ascii\menus\your_name.txt"
 ECHO.
 ECHO.
-ECHO                                                 Custom Pronouns
+ECHO                                                 Custom Pronouns (2)
 ECHO +----------------------------------------------------------------------------------------------------------------------+
 ECHO + Enter a PERSONAL pronoun. EXAMPLE: SHE/HER, HE/HIM, THEY/THEM, IT/ITS
 ECHO +----------------------------------------------------------------------------------------------------------------------+
