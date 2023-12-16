@@ -1,7 +1,7 @@
 @ECHO OFF
-TITLE Combat Engine 7 - "Shi'a'loh"
+TITLE Combat Engine 7 - "Bottle o' Features"
 MODE con: cols=120 lines=25
-REM Combat Engine 7 (v7.0 231213) - Combat Engine for Build 2 "Bottle o' Features"
+REM Combat Engine 7 (v7.0 231216) - Combat Engine for Build 2 "Bottle o' Features"
 GOTO :T
 REM Set enemy names with the location identifier and set the schrodinger's variables.
 SET curEn=%currentEnemy%
@@ -65,7 +65,7 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^|                             HP: %enHP% ^| ATK: %enAT% ^| STM: %enST%
 ECHO ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO.
+ECHO + STATUS: %player_effect_1% , %player_effect_2%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| HP: %HP% ^| STM: %stamina% ^| ATK: %player_damage% ^| AMR: %armor_equip% ^| MGK: %magicka% ^| AP %player_action_p%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -246,16 +246,12 @@ IF %PM1name% == VACANT (
         ) ELSE (
             REM Do Party member 3's attack only.
             SET PARTY_SLOT_3=1
-            REM Debug skip.
-            GOTO :armor_calculation
             GOTO :PM3attack_calculation
         )
     ) ELSE (
         IF %PM3name% == VACANT (
             REM Do Party Member 2's attack only.
             SET PARTY_SLOT_3=0
-            REM Debug skip.
-            GOTO :armor_calculation
             GOTO :PM2attack_calculation
         )
     )
@@ -265,22 +261,16 @@ IF %PM1name% == VACANT (
         IF %PM3name% == VACANT (
             REM Do Party Member 1's attack only.
             SET PARTY_SLOT_3=0
-            REM Debug skip.
-            GOTO :armor_calculation
             GOTO :PM1attack_calculation
         ) ELSE (
             REM Do Party Member 1 & 3's attacks only.
             SET PARTY_SLOT_3=1
-            REM Debug skip.
-            GOTO :armor_calculation
             GOTO :PM1attack_calculation
         )
     ) ELSE (
         IF %PM3name% == VACANT (
             REM Do Party Member 1 & 2's attacks only.
             SET PARTY_SLOT_2=0
-            REM Debug skip.
-            GOTO :armor_calculation
             GOTO :PM1attack_calculation
         )
     )
@@ -325,34 +315,71 @@ IF %AAT% GTR 17 (
 
 REM "Action Point Regeneration", returns Action Points to the Player based on Damage Skill level.
 :APR
-IF %damage_skill% EQU 6 (
-    REM Return 12 APs to the Player.
-    SET /A player_action_p=!player_action_p! +12
-    GOTO :EBS
-) ELSE IF %damage_skill% EQU 5 (
-    REM Return 11 APs to the Player.
-    SET /A player_action_p=!player_action_p! +11
-    GOTO :EBS
-) ELSE IF %damage_skill% EQU 4 (
-    REM Return 10 APs to the Player.
-    SET /A player_action_p=!player_action_p! +10
-    GOTO :EBS
-) ELSE IF %damage_skill% EQU 3 (
-    REM Return 8 APs to the Player.
-    SET /A player_action_p=!player_action_p! +8
-    GOTO :EBS
-) ELSE IF %damage_skill% EQU 2 (
-    REM Return 6 APs to the Player.
-    SET /A player_action_p=!player_action_p! +6
-    GOTO :EBS
+REM First check if the Player is wearing either the Kite Shield or Guard Armor, if both do NOT stack the buff.
+IF %shd_e% == KiteBuckler (
+    REM Now check skill levels.
+    IF %damage_skill% EQU 6 (
+        REM Return 12 APs to the Player. + kite shield buff.
+        SET /A player_action_p=!player_action_p! +17
+        GOTO :EBS
+    ) ELSE IF %damage_skill% EQU 5 (
+        REM Return 11 APs to the Player.
+        SET /A player_action_p=!player_action_p! +16
+        GOTO :EBS
+    ) ELSE IF %damage_skill% EQU 4 (
+        REM Return 10 APs to the Player.
+        SET /A player_action_p=!player_action_p! +15
+        GOTO :EBS
+    ) ELSE IF %damage_skill% EQU 3 (
+        REM Return 8 APs to the Player.
+        SET /A player_action_p=!player_action_p! +13
+        GOTO :EBS
+    ) ELSE IF %damage_skill% EQU 2 (
+        REM Return 6 APs to the Player.
+        SET /A player_action_p=!player_action_p! +11
+        GOTO :EBS
+    ) ELSE (
+        REM ERROR HANDLING
+        :T
+        ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
+        ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
+        SET errorType=attributeSkill
+        CALL "%cd%\data\functions\Error Handler.bat"
+        EXIT /B
+    )
 ) ELSE (
-    REM ERROR HANDLING
-    :T
-    ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
-    ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
-    SET errorType=attributeSkill
-    CALL "%cd%\data\functions\Error Handler.bat"
-    EXIT /B
+    IF %amr_e% == GuardArmor (
+        REM Now check skill levels.
+        IF %damage_skill% EQU 6 (
+            REM Return 12 APs to the Player.
+            SET /A player_action_p=!player_action_p! +17
+            GOTO :EBS
+        ) ELSE IF %damage_skill% EQU 5 (
+            REM Return 11 APs to the Player.
+            SET /A player_action_p=!player_action_p! +16
+            GOTO :EBS
+        ) ELSE IF %damage_skill% EQU 4 (
+            REM Return 10 APs to the Player.
+            SET /A player_action_p=!player_action_p! +15
+            GOTO :EBS
+        ) ELSE IF %damage_skill% EQU 3 (
+            REM Return 8 APs to the Player.
+            SET /A player_action_p=!player_action_p! +13
+            GOTO :EBS
+        ) ELSE IF %damage_skill% EQU 2 (
+            REM Return 6 APs to the Player.
+            SET /A player_action_p=!player_action_p! +11
+            GOTO :EBS
+        ) ELSE (
+            REM ERROR HANDLING
+            :T
+            ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
+            ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
+            SET errorType=attributeSkill
+            CALL "%cd%\data\functions\Error Handler.bat"
+            EXIT /B
+        )
+    )
 )
 
 REM Chance based escape.
@@ -459,7 +486,7 @@ IF ERRORLEVEL 1 GOTO :LOOTING
 
 REM Calls the looting script.
 :LOOTING
-CALL "%cd%\data\functions\Combat Engine\ceLoot.bat"
+CALL "%cd%\data\Combat Engine\scripts\ceLoot.bat"
 GOTO :victory
 
 :defeat
