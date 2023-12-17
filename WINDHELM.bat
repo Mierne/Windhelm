@@ -1,3 +1,4 @@
+if not defined in_subprocess (cmd /k set in_subprocess=y ^& %0 %*) & exit )
 @ECHO OFF
 SETLOCAL ENABLEDELAYEDEXPANSION
 TITLE Windhelm - Main Menu
@@ -9,7 +10,7 @@ REM Read the settings file and apply the value to "setColor".
 (
 SET /P setColor=
 )<data\settings.txt
-GOTO settingsApply
+GOTO :settingsApply
 
 REM Change the "COLOR" to the saved value, and prevent "ECHO IS OFF" readback from displayMessage.
 :settingsApply
@@ -23,7 +24,7 @@ ECHO.
 TYPE "%cd%\data\ascii\menus\main.txt"
 ECHO.
 ECHO.
-ECHO Build 2 (231201) "Bottle o' Features"
+ECHO Build 2 (231217) "Bottle o' Features"
 ECHO Copyright (c) Mierne, 2023. All Rights Reserved.
 ECHO ========================================================================================================================
 ECHO                           [1 / CONTINUE ] ^| [2 / NEW GAME ] ^| [3 / SETTINGS ] ^| [E / EXIT ] 
@@ -72,12 +73,10 @@ ECHO +--------------------------------------------------------------------------
 ECHO +                                 HP / %hp% ^| COINS / %coins% ^| ARMOR / %armor_equip% ^| LEVELS / %levels%
 ECHO + %displayMessage%
 ECHO +----------------------------------------------------------------------------------------------------------------------+
-ECHO                   [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [3 / ROCKWINN PLAZA ] ^| [4 / ACHIEVEMENTS ]
-CHOICE /C 123ASEM /N /M ">"
-IF ERRORLEVEl 7 GOTO :START
-IF ERRORLEVEL 6 GOTO :Exit_Without_Saving
-IF ERRORLEVEL 5 GOTO :Save_Game
-IF ERRORLEVEL 4 GOTO :Achievements_Viewer
+ECHO                   [1 / EXPLORE ] ^| [2 / INVENTORY ] ^| [3 / ROCKWINN PLAZA ] ^| [S / SAVE ] ^| [E / EXIT ]
+CHOICE /C 123SE /N /M ">"
+IF ERRORLEVEL 5 GOTO :Exit_Without_Saving
+IF ERRORLEVEL 4 GOTO :Save_Game
 IF ERRORLEVEL 3 GOTO :RWP
 IF ERRORLEVEL 2 GOTO :view_inventory
 IF ERRORLEVEL 1 GOTO :EE
