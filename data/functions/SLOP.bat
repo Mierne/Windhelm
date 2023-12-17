@@ -1,6 +1,18 @@
 @ECHO OFF
-TITLE Save, Load, Order and initialization Program (SLOP)
-REM Save, Load, Order and initialization Program v1.0 231213 - For Build 2 "Bottle o' Features"
+TITLE Save, Load Order and initialization Program (SLoP)
+REM Save, Load, Order and initialization Program v1.0 231217 - For Build 2 "Bottle o' Features"
+
+REM Hardcoded, unchanging variables such as Armor Protection value.
+:HCV
+SET cactusArmor_prot=5
+SET stoneArmor_prot=7
+SET steelArmor_prot=9
+SET scaledArmor_prot=15
+SET ironArmor_prot=8
+SET leatherArmor_prot=4
+SET silverArmor_prot=10
+SET goldArmor_prot=12
+GOTO :callCheck
 
 REM Check for the given reason this script was called
 :callCheck
@@ -38,6 +50,8 @@ ECHO %actionpoint_equip%
 ECHO %damage_skill%
 ECHO %stamina_skill%
 ECHO %magicka_skill%
+ECHO %player_affinity_alchemist%
+ECHO %player_affinity_armorer%
 ECHO %player_affinity_blacksmith%
 ECHO %player_affinity_armorer%
 ECHO %player_affinity_wizard%
@@ -46,6 +60,9 @@ ECHO %defeat_jester_achievement%
 ECHO %defeat_gnome_achievement%
 ECHO %defeat_hunter_achievement%
 ECHO %AFFC1_B%
+ECHO %AFFC1_AL%
+ECHO %AFFC1_AR%
+ECHO %AFFC1_W%
 ECHO %wpn_e%
 ECHO %shd_e%
 ECHO %amr_e%
@@ -106,67 +123,76 @@ ECHO %guardA_q%
 ECHO %bronze_buckler_q%
 ECHO %kite_shield_q%
 )>"%cd%\data\player\inventory\Tools.txt"
-GOTO :PLAYER_SAVE_GENERAL_ITEMS
+GOTO :BLACKSMITH_SAVE_DATA
 
-REM Save the Player's general item data.
-:PLAYER_SAVE_GENERAL_ITEMS
+REM SAVING MERCHANT DATA - BLACKSMITH
+:BLACKSMITH_SAVE_DATA
 (
-ECHO %healingT_q%
-ECHO %staminaT_q%
-ECHO %magickaT_q%
-ECHO %stunT_q%
-ECHO %travelers_journal_r%
-ECHO %merchants_guide_r%
-ECHO %guide_to_blades_r%
-)>"%cd%\data\player\inventory\General Items.txt"
-GOTO :BLACKSMITH_SAVE_INVENTORY
+ECHO %lSword_p%
+ECHO %sSword_p%
+ECHO %gAxe_p%
+ECHO %mace_p%
+ECHO %wBow_p%
+ECHO %lSword_affinityleveltwo_d%
+ECHO %sSword_affinityleveltwo_d%
+ECHO %gAxe_affinityleveltwo_d%
+ECHO %mace_affinityleveltwo_d%
+ECHO %wBow_affinityleveltwo_d%
+ECHO %lSword_s%
+ECHO %sSword_s%
+ECHO %gAxe_s%
+ECHO %mace_s%
+ECHO %wBow_s%
+)>"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Blacksmith.txt
+GOTO :WIZARD_SAVE_DATA
 
-REM Saves the Blacksmith's inventory data.
-:BLACKSMITH_SAVE_INVENTORY
+REM SAVING MERCHANT DATA - WIZARD
+:WIZARD_SAVE_DATA
 (
-ECHO %longswordB_q%
-ECHO %shortswordB_q%
-ECHO %greataxeB_q%
-ECHO %maceB_q%
-ECHO %woodenbbl_q%
-ECHO %cactusB_q%
-ECHO %stoneB_q%
-ECHO %steelB_q%
-ECHO %scaledB_q%
-ECHO %longswordB_b%
-ECHO %shortswordB_b%
-ECHO %greataxeB_b%
-ECHO %maceB_b%
-ECHO %woodenb_b%
-ECHO %cactusB_q%
-ECHO %stoneB_q%
-ECHO %steelB_q%
-ECHO %scaledB_q%
-ECHO %longswordB_price%
-ECHO %shortswordB_price%
-ECHO %greataxeB_price%
-ECHO %maceB_price%
-ECHO %woodenbb_price%
-ECHO %cactusB_price%
-ECHO %stoneB_price%
-ECHO %steelB_price%
-ECHO %scaledB_price%
-)>"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Blacksmith Items.txt
-GOTO :LOREKEEPER_SAVE_INVENTORY
+ECHO %bRobes_p%
+ECHO %iRobes_p%
+ECHO %aRobes_p%
+ECHO %bRobes_affinityleveltwo_d%
+ECHO %iRobes_affinityleveltwo_d%
+ECHO %aRobes_affinityleveltwo_d%
+ECHO %bRobes_s%
+ECHO %iRobes_s%
+ECHO %aRobes_s%
+)>"%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\NPCs\NPC Data\Wizard.txt"
 
-REM Final saving stage.
-:LOREKEEPER_SAVE_INVENTORY
+GOTO :LOREKEEPER_SAVE_DATA
+
+REM SAVING MERCHANT DATA - LOREKEEPER
+:LOREKEEPER_SAVE_DATA
 (
-ECHO %travelers_journal_price%
-ECHO %merchants_guide_price%
-ECHO %guide_to_blades_price%
-ECHO %travelers_journalA1_price%
-ECHO %merchants_guideA1_price%
-ECHO %guide_to_bladesA1_price%
-ECHO %travelers_journalL_q%
-ECHO %merchants_guideL_q%
-ECHO %guide_to_bladesL_q%
-)>"%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\NPCs\NPC Data\Lorekeeper Items.txt
+ECHO %tJournal_p%
+ECHO %mGuide_p%
+ECHO %gBlades_p%
+ECHO %tJournal_affinityleveltwo_d%
+ECHO %mGuide_affinityleveltwo_d%
+ECHO %gBlades_affinityleveltwo_d%
+ECHO %tJournal_s%
+ECHO %mGuide_s%
+ECHO %gBlades_s%
+)>"%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\NPCs\NPC Data\Lorekeeper.txt
+GOTO :ALCHEMIST_SAVE_DATA
+
+REM FINAL SAVE STATGE - ALCHEMIST
+:ALCHEMIST_SAVE_DATA
+(
+ECHO %hTonic_p%
+ECHO %sTonic_p%
+ECHO %mTonic_p%
+ECHO %hTonic_affinityleveltwo_d%
+ECHO %sTonic_affinityleveltwo_d%
+ECHO %mTonic_affinityleveltwo_d%
+ECHO %hTonic_affinitylevelthree_d%
+ECHO %sTonic_affinitylevelthree_d%
+ECHO %mTonic_affinitylevelthree_d%
+ECHO %hTonic_s%
+ECHO %sTonic_s%
+ECHO %mTonic_s%
+)>"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Alchemist.txt"
 GOTO :EOF
 
 REM Loads Player stats.
@@ -191,6 +217,8 @@ SET /P actionpoint_equip=
 SET /P damage_skill=
 SET /P stamina_skill=
 SET /P magicka_skill=
+SET /P player_affinity_alchemist=
+SET /P player_affinity_armorer=
 SET /P player_affinity_blacksmith=
 SET /P player_affinity_armorer=
 SET /P player_affinity_wizard=
@@ -199,6 +227,9 @@ SET /P defeat_jester_achievement=
 SET /P defeat_gnome_achievement=
 SET /P defeat_hunter_achievement=
 SET /P AFFC1_B=
+SET /P AFFC1_AL=
+SET /P AFFC1_AR=
+SET /P AFFC1_W=
 SET /P wpn_e=
 SET /P shd_e=
 SET /P amr_e=
@@ -282,81 +313,100 @@ REM Rockwinn Plaza NPC loading.
 REM Loads the Blacksmith's inventory data.
 :BLACKSMITH_LOAD_INVENTORY
 (
-SET /P longsword_price=
-SET /P shortsword_price=
-SET /P greataxe_price=
-SET /P mace_price=
-SET /P woodenb_price=
-SET /P cactusA_price=
-SET /P stoneA_price=
-SET /P steelA_price=
-SET /P scaledA_price=
-SET /P healingT_price=
-SET /P staminaT_price=
-SET /P magickaT_price=
-SET /P longswordA1_price=
-SET /P shortswordA1_price=
-SET /P greataxeA1_price=
-SET /P maceA1_price=
-SET /P woodenbA1_price=
-SET /P cactusAA1_price=
-SET /P stoneAA1_price=
-SET /P steelAA1_price=
-SET /P scaledAA1_price=
-SET /P longswordB_q=
-SET /P shortswordB_q=
-SET /P greataxeB_q=
-SET /P maceB_q=
-SET /P woodenb_q=
-SET /P cactusB_q=
-SET /P stoneB_q=
-SET /P steelB_q=
-SET /P scaledB_q=
-SET /P longswordB_b=
-SET /P shortswordB_b=
-SET /P greataxeB_b=
-SET /P maceB_b=
-SET /P woodenbbl_q=
-SET /P cactusB_q=
-SET /P stoneB_q=
-SET /P steelB_q=
-SET /P scaledB_q=
-SET /P longswordB_price=
-SET /P shortswordB_price=
-SET /P greataxeB_price=
-SET /P maceB_price=
-SET /P woodenbb_price=
-SET /P cactusB_price=
-SET /P stoneB_price=
-SET /P steelB_price=
-SET /P scaledB_price=
-)<"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Blacksmith Items.txt
-GOTO :ARMORER_LOAD_INVENTORY
+SET /P lSword_p=
+SET /P sSword_p=
+SET /P gAxe_p=
+SET /P mace_p=
+SET /P wBow_p=
+SET /P lSword_affinityleveltwo_d=
+SET /P sSword_affinityleveltwo_d=
+SET /P gAxe_affinityleveltwo_d=
+SET /P mace_affinityleveltwo_d=
+SET /P wBow_affinityleveltwo_d=
+SET /P lSword_s=
+SET /P sSword_s=
+SET /P gAxe_s=
+SET /P mace_s=
+SET /P wBow_s=
+)<"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Blacksmith.txt
+GOTO :ARMORER_LOAD_DATA
 
-REM AS OF 11/27 the Armorer doesn't use an inventory, still waiting to add it.
-REM Load the Armorer's inventory.
-:ARMORER_LOAD_INVENTORY
-GOTO :LOREKEEPER_LOAD_INVENTORY
-
-REM Windhelm High Quarter loading.
-REM Load the Lorekeeper's inventory.
-:LOREKEEPER_LOAD_INVENTORY
+REM LOAD MERCHANT DATA - ARMORER
+:ARMORER_LOAD_DATA
 (
-SET /P travelers_journal_price=
-SET /P merchants_guide_price=
-SET /P guide_to_blades_price=
-SET /P travelers_journalA1_price=
-SET /P merchants_guideA1_price=
-SET /P guide_to_bladesA1_price=
-SET /P travelers_journalL_q=
-SET /P merchants_guideL_q=
-SET /P guide_to_bladesL_q=
-)<"%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\NPCs\NPC Data\Lorekeeper Items.txt
-GOTO :WIZARD_LOAD_INVENTORY
+SET /P cactusArmor_p=
+SET /P stoneArmor_p=
+SET /P steelArmor_p=
+SET /P scaledArmor_p=
+SET /P ironArmor_p=
+SET /P leatherArmor_p=
+SET /P silverArmor_p=
+SET /P goldArmor_p=
+SET /P cactusArmor_affinityleveltwo_d=
+SET /P stoneArmor_affinityleveltwo_d=
+SET /P steelArmor_affinityleveltwo_d=
+SET /P scaledArmor_affinityleveltwo_d=
+SET /P ironArmor_affinityleveltwo_d=
+SET /P leatherArmor_affinityleveltwo_d=
+SET /P silverArmor_affinityleveltwo_d=
+SET /P goldArmor_affinityleveltwo_d=
+SET /P cactusArmor_s=
+SET /P stoneArmor_s=
+SET /P steelArmor_s=
+SET /P scaledArmor_s=
+SET /P ironArmor_ps=
+SET /P leatherArmor_s=
+SET /P silverArmor_s=
+SET /P goldArmor_s=
+)<"%cd%\data\Exploration Engine\Rockwinn Plaza\NPCs\NPC Data\Armorer.txt"
+GOTO :LOREKEEPER_LOAD_DATA
 
-REM AS OF 11/27 the Wizard doesn't use an inventory, still waiting to add it.
-REM Final loading stage. Load the Wizard's inventory.
-:WIZARD_LOAD_INVENTORY
+REM LOAD MERCHANT DATA - LOREKEEPER
+:LOREKEEPER_LOAD_DATA
+(
+SET /P tJournal_p=
+SET /P mGuide_p=
+SET /P gBlades_p=
+SET /P tJournal_affinityleveltwo_d=
+SET /P mGuide_affinityleveltwo_d=
+SET /P gBlades_affinityleveltwo_d=
+SET /P tJournal_s=
+SET /P mGuide_s=
+SET /P gBlades_s=
+)<"%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\NPCs\NPC Data\Lorekeeper.txt
+GOTO :WIZARD_LOAD_DATA
+
+REM LOAD MERCHANT DATA - WIZARD
+:WIZARD_LOAD_DATA
+(
+SET /P bRobes_p=
+SET /P iRobes_p=
+SET /P aRobes_p=
+SET /P bRobes_affinityleveltwo_d=
+SET /P iRobes_affinityleveltwo_d=
+SET /P aRobes_affinityleveltwo_d=
+SET /P bRobes_s=
+SET /P iRobes_s=
+SET /P aRobes_s=
+)<"%cd%\data\Exploration Engine\Cells\Windhelm Higher Quarter\NPCs\NPC Data\Wizard.txt"
+GOTO :ALCHEMIST_LOAD_DATA
+
+REM LOAD MERCHANT DATA - ALCHEMIST
+:ALCHEMIST_LOAD_DATA
+(
+SET /P hTonic_p=
+SET /P sTonic_p=
+SET /P mTonic_p=
+SET /P hTonic_affinityleveltwo_d=
+SET /P sTonic_affinityleveltwo_d=
+SET /P mTonic_affinityleveltwo_d=
+SET /P hTonic_affinitylevelthree_d=
+SET /P sTonic_affinitylevelthree_d=
+SET /P mTonic_affinitylevelthree_d=
+SET /P hTonic_s=
+SET /P sTonic_s=
+SET /P mTonic_s=
+)<"%cd%\data\Exploration Engine\Cells\Rockwinn Plaza\NPCs\NPC Data\Alchemist.txt"
 GOTO :EOF
 
 REM Runs when a new game is started to generate needed variables.
@@ -382,9 +432,10 @@ SET actionpoint_equip=0
 SET damage_skill=2
 SET stamina_skill=2
 SET magicka_skill=2
-REM Player affinity
-SET player_affinity_blacksmith=200
+REM Player affinity. Level 1: 200, Level 2: 400, Level 3: 600, Level 4: 1000, Level 5 (MAX): 2000
+SET player_affinity_alchemist=200
 SET player_affinity_armorer=200
+SET player_affinity_blacksmith=200
 SET player_affinity_wizard=200
 REM Player achievements
 SET defeat_bandit_achievement=0
@@ -393,6 +444,9 @@ SET defeat_gnome_achievement=0
 SET defeat_hunter_achievement=0
 REM Affinity Check
 SET AFFC1_B=0
+SET AFFC1_AL=0
+SET AFFC1_AR=0
+SET AFFC1_W=0
 REM Player positions
 SET LL=WP
 REM Set default Party information.
@@ -463,77 +517,103 @@ REM GENERAL INVENTORY ITEMS, SUCH AS BOOKS & SCROLLS.
 SET travelers_journal_q=0
 SET merchants_guide_q=0
 SET guide_to_blades_q=0
-REM Has the scroll/book been read?
+REM Has the skill scroll/book been read?
 SET travelers_journal_r=0
 SET merchants_guide_r=0
 SET guide_to_blades_r=0
 GOTO :INIT_MERCHANTS
 
-:INIT_MERCHANTS
 REM Setup Merchant inventories & Prices
-REM BLACKSMITH ITEM PRICES
-SET longsword_price=220
-SET shortsword_price=190
-SET greataxe_price=700
-SET mace_price=283
-SET woodenb_price=122
-SET cactusA_price=200
-SET stoneA_price=300
-SET steelA_price=900
-SET scaledA_price=1400
-SET healingT_price=0
-SET staminaT_price=0
-SET magickaT_price=0
-REM BLACKSMITH LEVEL 1 AFFINITY PRICES
-SET longswordA1_price=180
-SET shortswordA1_price=150
-SET greataxeA1_price=400
-SET maceA1_price=210
-SET woodenbA1_price=80
-SET cactusAA1_price=100
-SET stoneAA1_price=200
-SET steelAA1_price=500
-SET scaledAA1_price=1000
-REM BLACKSMITH ITEM COUNTS
-SET longswordB_q=20
-SET shortswordB_q=20
-SET greataxeB_q=20
-SET maceB_q=20
-SET woodenbbl_q=20
-SET cactusB_q=10
-SET stoneB_q=20
-SET steelB_q=4
-SET scaledB_q=1
-REM BLACKSMITH ACCEPTING ITEM?
-SET longswordB_b=0
-SET shortswordB_b=0
-SET greataxeB_b=0
-SET maceB_b=0
-SET woodenb_b=0
-SET cactusB_b=0
-SET stoneB_b=0
-SET steelB_b=0
-SET scaledB_b=0
-REM BLACKSMITH SELL (BUYING) PRICES
-SET longswordB_price=1
-SET shortswordB_price=1
-SET greataxeB_price=1
-SET maceB_price=1
-SET woodenbb_price=1
-SET cactusB_price=1
-SET stoneB_price=1
-SET steelB_price=1
-SET scaledB_price=1
-REM LOREKEEPER ITEM PRICES
-SET travelers_journal_price=80
-SET merchants_guide_price=400
-SET guide_to_blades_price=700
-REM LOREKEEPER LEVEL 1 AFFINITY PRICES
-SET travelers_journalA1_price=40
-SET merchants_guideA1_price=345
-SET guide_to_bladesA1_price=625
-REM LOREKEEPER ITEM COUNT
-SET travelers_journalL_q=1
-SET merchants_guideL_q=20
-SET guide_to_bladesL_q=5
+:INIT_MERCHANTS
+REM Blacksmith Shop Base Prices.
+SET lSword_p=220
+SET sSword_p=190
+SET gAxe_p=700
+SET mace_p=283
+SET wBow_p=122
+REM Blacksmith Shop Affinity level Two Discounts.
+SET lSword_affinityleveltwo_d=25
+SET sSword_affinityleveltwo_d=25
+SET gAxe_affinityleveltwo_d=25
+SET mace_affinityleveltwo_d=25
+SET wBow_affinityleveltwo_d=25
+REM Blacksmith Sellback Prices.
+SET lSword_p=190
+SET sSword_p=140
+SET gAxe_p=500
+SET mace_p=215
+SET wBow_p=80
+REM Blacksmith Shop Stock.
+SET lSword_s=6
+SET sSword_s=4
+SET gAxe_s=5
+SET mace_s=5
+SET wBow_s=2
+REM Lorekeeper Shop Base Prices.
+SET tJournal_p=80
+SET mGuide_p=400
+SET gBlades_p=700
+REM Lorekeeper Shop Affinity Level Two Discounts.
+SET tJournal_affinityleveltwo_d=10
+SET mGuide_affinityleveltwo_d=40
+SET gBlades_affinityleveltwo_d=90
+REM Lorekeeper Shop Item Stock.
+SET tJournal_s=1
+SET mGuide_s=5
+SET gBlades_s=2
+REM Alchemist Shop Base Prices.
+SET hTonic_p=25
+SET sTonic_p=25
+SET mTonic_p=25
+REM Alchemist Shop Affinity Level Two Discouts.
+SET hTonic_affinityleveltwo_d=5
+SET sTonic_affinityleveltwo_d=5
+SET mTonic_affinityleveltwo_d=5
+REM Alchemist Shop Affinity Level Three Discouts.
+SET hTonic_affinitylevelthree_d=10
+SET sTonic_affinitylevelthree_d=10
+SET mTonic_affinitylevelthree_d=10
+REM Alchemist Item Stock.
+SET hTonic_s=50
+SET sTonic_s=50
+SET mTonic_s=50
+REM Wizard Shop Base Prices.
+SET bRobes_p=500
+SET iRobes_p=1200
+SET aRobes_p=5000
+REM Wizard Shop Affinity Level Two Discounts.
+SET bRobes_affinityleveltwo_d=40
+SET iRobes_affinityleveltwo_d=100
+SET aRobes_affinityleveltwo_d=200
+REM Wizard Shop Item Stock.
+SET bRobes_s=10
+SET iRobes_s=5
+SET aRobes_s=1
+REM Armorer Shop Base Prices.
+SET cactusArmor_p=100
+SET stoneArmor_p=200
+SET steelArmor_p=500
+SET scaledArmor_p=1200
+SET ironArmor_p=250
+SET leatherArmor_p=80
+SET silverArmor_p=800
+SET goldArmor_p=850
+REM Armorer Shop Affinity Level Two Discounts.
+SET cactusArmor_affinityleveltwo_d=20
+SET stoneArmor_affinityleveltwo_d=20
+SET steelArmor_affinityleveltwo_d=20
+SET scaledArmor_affinityleveltwo_d=20
+SET ironArmor_affinityleveltwo_d=20
+SET leatherArmor_affinityleveltwo_d=20
+SET silverArmor_affinityleveltwo_d=20
+SET goldArmor_affinityleveltwo_d=20
+REM Armorer Shop Item Stock.
+SET cactusArmor_s=10
+SET stoneArmor_s=10
+SET steelArmor_s=10
+SET scaledArmor_s=4
+SET ironArmor_ps=10
+SET leatherArmor_s=10
+SET silverArmor_s=5
+SET goldArmor_s=6
 GOTO :saveData
