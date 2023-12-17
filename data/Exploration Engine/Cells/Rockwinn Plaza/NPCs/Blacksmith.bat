@@ -1,7 +1,6 @@
 @ECHO OFF
-TITLE WINDHELM PLAZA - THE BLACKSMITH
-REM BLACKSMITH v2.1 - AUTUMMN TALES VERSION
-REM // 1 - Added dialogue branches.
+TITLE (Rockwinn Plaza) - Blacksmith ^| Name: %player_name% ^| Class: %player_class%
+REM BLACKSMITH v3.0 (231217) - For Bottle o' Features.
 
 REM Variables
 SET weaponMenu=buySwords
@@ -11,7 +10,7 @@ REM Affinity Checks to prevent spam.
 :AFFC
 (
 SET /P AFFC1_B=
-)<"%cd%\data\player\plr_stat.txt"
+)<"%cd%\data\player\Player Stats.txt"
 GOTO :dash
 
 REM DASHBOARD / MAIN MENU
@@ -24,13 +23,11 @@ ECHO.
 ECHO COINS: %coins% ^| AFFINITY: %player_affinity_blacksmith%
 ECHO %displayMessage%
 ECHO ========================================================================================================================
-ECHO [1] SWORDS ^| [2] AXES ^| [3] MACES ^| [4] ARMOR ^| [5] RANGED |^ [T] TALK ^| [S] SELL ^| [E] LEAVE
-CHOICE /C 12345TSE /N /M ">"
-IF ERRORLEVEL 8 GOTO :EOF
-IF ERRORLEVEL 7 GOTO :sellItems
-IF ERRORLEVEL 6 GOTO :blacksmith_dialogue
-IF ERRORLEVEL 5 GOTO :buyRanged
-IF ERRORLEVEL 4 GOTO :buyArmor
+ECHO [1] SWORDS ^| [2] AXES ^| [3] MACES ^| [4] RANGED |^ [T] TALK ^| [E] LEAVE
+CHOICE /C 1234TE /N /M ">"
+IF ERRORLEVEL 6 GOTO :EOF
+IF ERRORLEVEL 5 GOTO :blacksmith_dialogue
+IF ERRORLEVEL 4 GOTO :buyRanged
 IF ERRORLEVEL 3 GOTO :buyMaces
 IF ERRORLEVEL 2 GOTO :buyAxes
 IF ERRORLEVEL 1 GOTO :buySwords
@@ -44,11 +41,11 @@ ECHO                                           IRON-FIST ABE
 ECHO                                 Hail, Shard. What can I do for you?
 ECHO.
 ECHO COINS: %coins%
-ECHO %displayMessage% (DEBUG MESSAGE)
-ECHO %longswordA1_price% (DEBUG MESSAGE)
-ECHO %longsword_price% (DEBUG MESSAGE)
-ECHO LONGSWORD %longsword_q% (DEBUG MESSAGE)
-ECHO SHORTSWORD %shortsword_q% (DEBUG MESSAGE)
+ECHO %displayMessage% (DEBUG)
+ECHO %longswordA1_price% (DEBUG)
+ECHO %longsword_price% (DEBUG)
+ECHO LONGSWORD %longsword_q% (DEBUG)
+ECHO SHORTSWORD %shortsword_q% (DEBUG)
 ECHO ========================================================================================================================
 ECHO [1] Longsword ^| [2] Shortsword ^| [E] BACK
 ECHO     [%longsword_price%]     ^|     [%shortsword_price%]
@@ -169,109 +166,6 @@ IF %player_affinity_blacksmith% GEQ 400 (
         SET /A coins=!coins! -%mace_price%
         SET /A mace_q=!mace_q! +1
         SET displayMessage=Purchased Mace for %mace_price%!
-        GOTO :dash
-    )
-)
-
-REM BUY ARMOR
-:buyArmor
-set weaponMenu=buyArmor
-CLS
-echo.
-echo                                           IRON-FIST ABE
-echo                                 Hail, Shard. What can I do for you?
-echo.
-echo LEVELS: %LEVELS% ^| COINS: %COINS%
-echo %displayMessage%
-echo ========================================================================================================================
-echo [1] CACTUS ARMOR ^| [2] STONE ARMOR ^| [3] STEEL ARMOR ^| [4] SCALED ARMOR ^| [E] BACK
-CHOICE /C 1234E /N /M ">"
-IF ERRORLEVEL 5 GOTO :dash
-IF ERRORLEVEL 4 GOTO :buyScaledArmor
-IF ERRORLEVEL 3 GOTO :buySteelArmor
-IF ERRORLEVEL 2 GOTO :buyStoneArmor
-IF ERRORLEVEL 1 GOTO :buyCactusArmor
-
-:buyCactusArmor
-IF %player_affinity_blacksmith% GEQ 400 (
-    IF %coins% LSS %cactusAA1_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%cactusAA1_price%
-        SET /A cactusA_q=!cactusA_q! +1
-        SET displayMessage=Purchased Cactus Armor for %cactusAA1_price%!
-        GOTO :dash
-    )
-) ELSE (
-    IF %coins% LSS %cactusA_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%cactusA_price%
-        SET /A cactusA_q=!cactusA_q! +1
-        SET displayMessage=Purchased Cactus Armor for %cactusA_price%!
-        GOTO :dash
-    )
-)
-
-:buyStoneArmor
-IF %player_affinity_blacksmith% GEQ 400 (
-    IF %coins% LSS %stoneAA1_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%stoneAA1_price%
-        SET /A stoneA_q=!stoneA_q! +1
-        SET displayMessage=Purchased Stone Armor for %stoneAA1_price%!
-        GOTO :dash
-    )
-) ELSE (
-    IF %coins% LSS %stoneA_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%stoneA_price%
-        SET /A stoneA_q=!stoneA_q! +1
-        SET displayMessage=Purchased Stone Armor for %stoneA_price%!
-        GOTO :dash
-    )
-)
-
-:buySteelArmor
-IF %player_affinity_blacksmith% GEQ 400 (
-    IF %coins% LSS %steelAA1_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%steelAA1_price%
-        SET /A steelA_q=!steelA_q! +1
-        SET displayMessage=Purchased Steel Armor for %steelAA1_price%!
-        GOTO :dash
-    )
-) ELSE (
-    IF %coins% LSS %steelA_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%steelA_price%
-        SET /A steelA_q=!steelA_q! +1
-        SET displayMessage=Purchased Steel Armor for %steelA_price%!
-        GOTO :dash
-    )
-)
-
-:buyScaledArmor
-IF %player_affinity_blacksmith% GEQ 400 (
-    IF %coins% LSS %scaledAA1_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%scaledAA1_price%
-        SET /A scaledA_q=!scaledA_q! +1
-        SET displayMessage=Purchased Scaled Armor for %scaledAA1_price%!
-        GOTO :dash
-    )
-) ELSE (
-    IF %coins% LSS %cactusA_price% (
-        GOTO :cannotAfford
-    ) ELSE (
-        SET /A coins=!coins! -%cactusA_price%
-        SET /A cactusA_q=!cactusA_q! +1
-        SET displayMessage=Purchased Cactus Armor for %cactusA_price%!
         GOTO :dash
     )
 )
