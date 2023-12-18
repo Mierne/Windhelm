@@ -1,13 +1,14 @@
 @ECHO OFF
 TITLE Save, Load Order and initialization Program (SLoP)
-REM Save, Load, Order and initialization Program v1.0 231217 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231218 - For Build 2 "Bottle o' Features"
 
 REM Hardcoded, unchanging variables such as Armor Protection value.
 :HCV
-SET cactusArmor_prot=5
-SET stoneArmor_prot=7
-SET steelArmor_prot=9
-SET scaledArmor_prot=15
+SET cactusA_p=3
+SET guardA_p=5
+SET stoneA_p=7
+SET steelA_p=9
+SET scaledA_p=15
 SET ironArmor_prot=8
 SET leatherArmor_prot=4
 SET silverArmor_prot=10
@@ -50,6 +51,7 @@ ECHO %actionpoint_equip%
 ECHO %damage_skill%
 ECHO %stamina_skill%
 ECHO %magicka_skill%
+ECHO %speech_skill%
 ECHO %player_affinity_alchemist%
 ECHO %player_affinity_armorer%
 ECHO %player_affinity_blacksmith%
@@ -120,6 +122,9 @@ ECHO %stoneA_q%
 ECHO %steelA_q%
 ECHO %scaledA_q%
 ECHO %guardA_q%
+ECHO %bRobes_q%
+ECHO %iRobes_q%
+ECHO %aRobes_q%
 ECHO %bronze_buckler_q%
 ECHO %kite_shield_q%
 )>"%cd%\data\player\inventory\Tools.txt"
@@ -217,6 +222,7 @@ SET /P actionpoint_equip=
 SET /P damage_skill=
 SET /P stamina_skill=
 SET /P magicka_skill=
+SET /P speech_skill=
 SET /P player_affinity_alchemist=
 SET /P player_affinity_armorer=
 SET /P player_affinity_blacksmith=
@@ -288,6 +294,9 @@ SET /P stoneA_q=
 SET /P steelA_q=
 SET /P scaledA_q=
 SET /P guardA_q=
+SET /P bRobes_q=
+SET /P iRobes_q=
+SET /P aRobes_q=
 SET /P bronze_buckler_q=
 SET /P kite_shield_q=
 )<"%cd%\data\player\inventory\Tools.txt"
@@ -432,6 +441,7 @@ SET actionpoint_equip=0
 SET damage_skill=2
 SET stamina_skill=2
 SET magicka_skill=2
+SET speech_skill=2
 REM Player affinity. Level 1: 200, Level 2: 400, Level 3: 600, Level 4: 1000, Level 5 (MAX): 2000
 SET player_affinity_alchemist=200
 SET player_affinity_armorer=200
@@ -501,6 +511,9 @@ SET stoneA_q=0
 SET steelA_q=0
 SET scaledA_q=0
 SET guardA_q=0
+SET bRobes_q=0
+SET iRobes_q=0
+SET aRobes_q=0
 REM Create shields owned values.
 SET bronze_buckler_q=0
 SET kite_shield_q=0
