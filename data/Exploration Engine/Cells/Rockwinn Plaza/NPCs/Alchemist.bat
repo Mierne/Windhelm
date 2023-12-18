@@ -63,13 +63,13 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -%hTonic_p%
+        SET /A coins=!coins! -%hTonic_p%
         REM Apply the Discount.
-        SET /A %coins%=!coins! +%hTonic_affinityleveltwo_d%
+        SET /A coins=!coins! +%hTonic_affinityleveltwo_d%
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %hTonic_s%=hTonic_s -1
+        SET /A hTonic_s=hTonic_s -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %healingT_q%=!healingT_q! +1
+        SET /A healingT_q=!healingT_q! +1
         SET displayMessage=Purchased 1 Healing Tonic for 20 coins.
         GOTO :BUY_TONICS
     )
@@ -81,11 +81,11 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -25
+        SET /A coins=!coins! -25
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %hTonic_s%=!hTonic_s! -1
+        SET /A hTonic_s=!hTonic_s! -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %healingT_q%=!healingT_q! +1
+        SET /A healingT_q=!healingT_q! +1
         SET displayMessage=Purchased 1 Healing Tonic for 25 coins.
         GOTO :BUY_TONICS
     )
@@ -102,13 +102,13 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -%sTonic_p%
+        SET /A coins=!coins! -%sTonic_p%
         REM Apply the Discount.
-        SET /A %coins%=!coins! +%sTonic_affinityleveltwo_d%
+        SET /A coins=!coins! +%sTonic_affinityleveltwo_d%
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %sTonic_s%=sTonic_s -1
+        SET /A sTonic_s=sTonic_s -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %staminaT_q%=!staminaT_q! +1
+        SET /A staminaT_q=!staminaT_q! +1
         SET displayMessage=Purchased 1 Stamaina Tonic for 20 coins.
         GOTO :BUY_TONICS
     )
@@ -120,11 +120,11 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -25
+        SET /A coins=!coins! -25
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %sTonic_p%=!sTonic_p! -1
+        SET /A sTonic_p=!sTonic_p! -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %staminaT_q%=!staminaT_q! +1
+        SET /A staminaT_q=!staminaT_q! +1
         SET displayMessage=Purchased 1 Stamina Tonic for 25 coins.
         GOTO :BUY_TONICS
     )
@@ -141,13 +141,13 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -%mTonic_p%
+        SET /A coins=!coins! -%mTonic_p%
         REM Apply the Discount.
-        SET /A %coins%=!coins! +%mTonic_affinityleveltwo_d%
+        SET /A coins=!coins! +%mTonic_affinityleveltwo_d%
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %mTonic_s%=mTonic_s -1
+        SET /A mTonic_s=mTonic_s -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %magickaT_q%=!magickaT_q! +1
+        SET /A magickaT_q=!magickaT_q! +1
         SET displayMessage=Purchased 1 Magicka Tonic for 20 coins.
         GOTO :BUY_TONICS
     )
@@ -159,11 +159,11 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     ) ELSE (
         REM Take the coins, remove [1] of the item from the Alchemist's stock and give [1] of the item to the Player.
-        SET /A %coins%=!coins! -25
+        SET /A coins=!coins! -25
         REM Remove [1] of this item from the Merchant's stock.
-        SET /A %mTonic_s%=!mTonic_s! -1
+        SET /A mTonic_s=!mTonic_s! -1
         REM Add [1] of this item to the Player's inventory.
-        SET /A %magickaT_q%=!magickaT_q! +1
+        SET /A magickaT_q=!magickaT_q! +1
         SET displayMessage=Purchased 1 Magicka Tonic for 25 coins.
         GOTO :BUY_TONICS
     )
