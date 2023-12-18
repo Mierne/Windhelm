@@ -1,10 +1,8 @@
 @ECHO OFF
-TITLE WINDHELM PLAZA - THE WIZARD (J'ZAR ALMANI)
-REM Plaza v1.1b (Autumn Awakening)
+TITLE (Windhelm Castle) High Quarter - J'Zar Almani ^| %player_name% the %player_class%
+REM Wizard NPC v2 (231217) - for Windhelm Build 2 "Bottle o' Features"
 
-REM Variables
-
-:dash
+:MAIN_MENU
 CLS
 ECHO.
 ECHO                                         J'ZAR ALMANI
@@ -13,280 +11,145 @@ ECHO.
 ECHO LEVELS: %LEVELS% ^| COINS: %COINS% ^| AFFINITY: %player_affinity_wizard%
 ECHO %displayMessage%
 ECHO ========================================================================================================================
-ECHO [1] HEALTH TONIC ^| [2] STAMINA TONIC ^| [3] WEAKEN TONIC ^| [4] SKILL POINTS
-ECHO     125 COINS    ^|     500 COINS     ^|     1025         ^|     350 COINS
-ECHO                             [S] SELL ^| [E] LEAVE
-CHOICE /C 1234SE /N /M ">"
-IF ERRORLEVEL 6 GOTO :EOF
-IF ERRORLEVEL 5 GOTO :sellTonics
-IF ERRORLEVEL 4 GOTO :skillPoints
-IF ERRORLEVEL 3 GOTO :buyWeakenTonic
-IF ERRORLEVEL 2 GOTO :buyStaminaTonic
-IF ERRORLEVEL 1 GOTO :buyHealthTonic
+ECHO [1 / BUY ROBES ] ^| [2 / SKILL POINTS ] ^| [T / TALK ] ^| [S / SELL ] ^| [E / LEAVE ]                         
+CHOICE /C 12TSE /N /M ">"
+IF ERRORLEVEL 4 GOTO :EOF
+IF ERRORLEVEL 3 GOTO :SELL_ITEMS
+IF ERRORLEVEL 2 GOTO :SKILL_POINTS
+IF ERRORLEVEL 1 GOTO :BUY_ROBES
 
-:buyHealthTonic
-IF %COINS% LSS 125 (
-    GOTO :noCoins
-) ELSE (
-    SET /A healingTONIC=!healingTONIC! +1
-    SET /A COINS=!COINS! -125
-    SET displayMessage=Purchased [1] Healing Tonic for 125 coins.
-    GOTO :dash
-)
-
-:buyStaminaTonic
-IF %COINS% LSS 500 (
-    GOTO :noCoins
-) ELSE (
-    SET /A staminaTONIC=!staminaTONIC! +1
-    SET /A COINS=!COINS! -500
-    SET displayMessage=Purchased [1] Stamina Tonic for 500 coins.
-    GOTO :dash
-)
-
-:buyWeakenTonic
-IF %COINS% LSS 1025 (
-    GOTO :noCoins
-) ELSE (
-    SET /A weakenTONIC=!weakenTONIC! +1
-    SET /A COINS=!COINS! -1025
-    SET displayMessage=Purchased [1] Weaken Tonic for 1025 coins.
-    GOTO :dash
-)
-
-REM SKILL POINTS
-:skillPoints
-IF %LEVELS% LSS 0 (
-    SET LEVELS=0
-)
+REM Apply skill points / upgrade specific stats.
+:SKILL_POINTS
 CLS
 ECHO.
-type data\TITLES\skills.txt
-ECHO.
-ECHO LEVELS: %LEVELS%
-ECHO DAMAGE: %damageSkill% ^| STAMINA: %staminaSkill% ^| MAGICKA: %magickaSkill% ^| ARMOR: %armorSkill%
-ECHO %displayMessage%
-ECHO ========================================================================================================================
-ECHO [1] ASSIGN DAMAGE ^| [2] ASSIGN STAMINA ^| [3] ASSIGN MAGICKA ^| [4] ASSIGN ARMOR
-ECHO   +1 SKILL POINT  ^|   +1 SKILL POINT   ^|   +1 SKILL POINT   ^|   +1 SKILL POINT
-ECHO   -20 LEVELS       ^|   -15 LEVELS       ^|   -5 LEVELS        ^|   -40 LEVELS
-ECHO                                     ^| [E] EXIT
+type "%cd%\data\TITLES\menus\skills.txt"
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^|                             I believe I can manage this, yes...                                   +
+ECHO ^| %displayMessage%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO + Damage Skill: %damageSkill% ^| Stamina Skill: %staminaSkill% ^| Magicka Skill: %magickaSkill%
+ECHO + Speech Skill: %speechSkill%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| COINS: %coins% ^| LEVELS: %levels% ^| AFFINITY: %player_affinity_wizard%
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO +                                          ITEM STOCK                                                +
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO ^| DAMAGE +1, -20 LEVELS ^| STAMINA +1, -12 LEVELS ^| MAGICKA +1, -20 LEVELS                         +                 
+ECHO ^| SPEECH +1, -8 LEVELS                                                                              +
+ECHO +--------------------------------------------------------------------------------------------------+
+ECHO + [1 / ASSIGN DAMAGE ] ^| [2 / ASSIGN STAMINA ] ^| [3 / ASSIGN MAGICKA ]                             +
+ECHO + [4 / ASSIGN SPEECH ] ^| [E / BACK ]                                                                +
+ECHO +--------------------------------------------------------------------------------------------------+
 CHOICE /C 1234E /N /M ">"
-IF ERRORLEVEL 5 GOTO :dash
-IF ERRORLEVEL 4 GOTO :checkArmor
-IF ERRORLEVEL 3 GOTO :checkMagicka
-IF ERRORLEVEL 2 GOTO :checkStamina
-IF ERRORLEVEL 1 GOTO :checkDamage
+IF ERRORLEVEL 5 GOTO :MAIN_MENU
+IF ERRORLEVEL 4 GOTO :APPLY__SPEECH
+IF ERRORLEVEL 3 GOTO :APPLY_MAGICKA
+IF ERRORLEVEL 2 GOTO :APPLY_STAMINA
+IF ERRORLEVEL 1 GOTO :APPLY_DAMAGE
 
-REM CHECK FOR CONFLICTS
-:checkArmor
-IF %damageSkill% EQU 4 (
-    GOTO :maxLevel
-) ELSE (
-    IF %armorSkill% GEQ 3 (
-        SET displayMessage=Skill limited by: Armor Skill.
-        GOTO :skillPoints
-    ) ELSE (
-        GOTO :assignDamage
-    )
-)
-
-:checkStamina
-IF %staminaSkill% EQU 4 (
-    GOTO :maxLevel
-) ELSE (
-    IF %magickaSkill% GEQ 5 (
-        SET displayMessage=Skill limited by: Magicka Skill.
-        GOTO :skillPoints
-    ) ELSE (
-        GOTO :assignStamina
-    )
-)
-
-:checkArmor
-IF %armorSkill% EQU 4 (
-    GOTO :maxLevel
-) ELSE (
-    IF %damageSkill% GEQ 3 (
-        SET displayMessage=Skill limited by: Damage Skill.
-        GOTO :skillPoints
-    ) ELSE (
-        GOTO :assignArmor
-    )
-)
-
-:checkMagicka
-IF %magickaSkill% EQU 4 (
-    GOTO :maxLevel
-) ELSE (
-    IF %staminaSkill% GEQ 3 (
-        SET displayMessage=Skill limited by: Stamina Skill.
-        GOTO :skillPoints
-    ) ELSE (
-        GOTO :assignMagicka
-    )
-)
-
-REM ASSIGN SKILL POINTS
-:assignDamage
-IF %player_class% == Warrior (
-    IF %LEVELS% LSS 15 (
-        GOTO :noLevels
-    ) ELSE (
+REM Check for max skill level caps and conflicting levels.
+:APPLY_DAMAGE
+IF %damageSkill% EQU 10 (
+    REM Max Skill Level.
+    SET displayMessage=Damage Skill is currently at the max level.
+    GOTO :SKILL_POINTS
+) ELSE IF %magickaSkill% EQU 8 (
+    IF %damageSkill% LSS 8 (
+        REM Apply damage skill, as it has not yet reached the cap.
+        REM Apply [1] skill point for [20] levels.
+        SET /A LEVELS=!LEVELS -20
         SET /A damageSkill=!damageSkill! +1
-        SET /A LEVELS=!LEVELS! -15
-        SET displayMessage=Damage skill increased by [1] for 15 levels (Class Discount)
-        GOTO :skillPoints
+        SET displayMessage=Applied +1 Damage Skill for -20 Levels.
+    GOTO :SKILL_POINTS
+    ) ELSE (
+        REM Skill Level Conflict.
+        SET displayMessage=Damage Skill cannot be increased further due to the Magicka Skill.
+        GOTO :SKILL_POINTS
     )
 ) ELSE (
-    IF %LEVELS% LSS 20 (
-        GOTO :noLevels
-    ) ELSE (
-        SET /A damageSkill=!damageSkill! +1
-        SET /A LEVELS=!LEVELS! -20
-        SET displayMessage=Damage skill increased by [1] for 20 levels.
-        GOTO :skillPoints
-    )
+    REM Apply [1] skill point for [20] levels.
+    SET /A LEVELS=!LEVELS -20
+    SET /A damageSkill=!damageSkill! +1
+    SET displayMessage=Applied +1 Damage Skill for -20 Levels.
+    GOTO :SKILL_POINTS
 )
 
-:assignStamina
-IF %LEVELS% LSS 15 (
-    GOTO :noLevels
+REM Check for max skill level caps and conflicting levels.
+:APPLY_STAMINA
+IF %staminaSkill% EQU 10 (
+    REM Max Skill Level.
+    SET displayMessage=Stamina Skill is currently at the max level.
+    GOTO :SKILL_POINTS
+) ELSE IF %magickaSkill% EQU 8 (
+    IF %staminaSkill% LSS 8 (
+        REM Apply Stamina skill, as it has not yet reached the cap.
+        REM Apply [1] skill point for [12] levels.
+        SET /A LEVELS=!LEVELS -12
+        SET /A staminaSkill=!staminaSkill! +1
+        SET displayMessage=Applied +1 Stamina Skill for -12 Levels.
+    GOTO :SKILL_POINTS
+    ) ELSE (
+        REM Skill Level Conflict.
+        SET displayMessage=Damage Skill cannot be increased further due to the Magicka Skill.
+        GOTO :SKILL_POINTS
+    )
 ) ELSE (
+    REM Apply [1] skill point for [12] levels.
+    SET /A LEVELS=!LEVELS -12
     SET /A staminaSkill=!staminaSkill! +1
-    SET /A LEVELS=!LEVELS! -15
-    SET displayMessage=Stamina skill increased by [1] for 15 levels.
-    GOTO :skillPoints
+    SET displayMessage=Applied +1 Stamina Skill for -12 Levels.
+    GOTO :SKILL_POINTS
 )
 
-:assignMagicka
-IF %player_class% == Mage (
-    IF %LEVELS% LSS 3 (
-        GOTO :noLevels
+REM Check for max skill level caps and conflicting levels.
+:APPLY_MAGICKA
+IF %magickaSkill% EQU 10 (
+    REM Max Skill Level.
+    SET displayMessage=Magicka Skill is currently at the max level.
+    GOTO :SKILL_POINTS
+) ELSE IF %damageSkill% EQU 8 (
+    IF %magickaSkill% LSS 8 (
+        REM Apply Magicka skill, as it has not yet reached the cap.
+        SET /A LEVELS=!LEVELS -20
+        SET /A magickaSkill=!magickaSkill! +1
+        SET displayMessage=Applied +1 Magicka Skill for -20 Levels.
+    GOTO :SKILL_POINTS
     ) ELSE (
-        SET /A damageSkill=!damageSkill! +1
-        SET /A LEVELS=!LEVELS! -3
-        SET displayMessage=Damage skill increased by [1] for 3 levels (Class Discount)
-        GOTO :skillPoints
+        REM Skill Level Conflict.
+        SET displayMessage=Magicka Skill cannot be increased further due to the Damage Skill.
+        GOTO :SKILL_POINTS
     )
 ) ELSE (
-    IF %LEVELS% LSS 5 (
-        GOTO :noLevels
+    REM Apply [1] skill point for [20] levels.
+    SET /A LEVELS=!LEVELS -20
+    SET /A magickaSkill=!magickaSkill! +1
+    SET displayMessage=Applied +1 Magicka Skill for -20 Levels.
+    GOTO :SKILL_POINTS
+)
+
+REM Check for max skill level caps and conflicting levels.
+:APPLY_SPEECH
+IF %speechSkill% EQU 10 (
+    REM Max Skill Level.
+    SET displayMessage=Speech Skill is currently at the max level.
+    GOTO :SKILL_POINTS
+) ELSE IF %damageSkill% EQU 8 (
+    IF %speechSkill% LSS 8 (
+        REM Apply Speech skill, as it has not yet reached the cap.
+        REM Apply [1] skill point for [8] levels.
+        SET /A LEVELS=!LEVELS -8
+        SET /A speechSkill=!speechSkill! +1
+        SET displayMessage=Applied +1 Speech Skill for -8 Levels.
+        GOTO :SKILL_POINTS
     ) ELSE (
-        SET /A damageSkill=!damageSkill! +1
-        SET /A LEVELS=!LEVELS! -5
-        SET displayMessage=Damage skill increased by [1] for 5 levels.
-        GOTO :skillPoints
+        REM Skill Level Conflict.
+        SET displayMessage=Speech Skill cannot be increased further due to the Damage Skill.
+        GOTO :SKILL_POINTS
     )
-)
-
-:assignArmor
-IF %LEVELS% LSS 40 (
-    GOTO :noLevels
 ) ELSE (
-    set /a armorSkill=!armorSkill! +1
-    set /a LEVELS=!LEVELS! -40
-    set displayMessage=Armor skill increased by [1] for 40 levels.
-    GOTO :skillPoints
+    REM Apply [1] skill point for [8] levels.
+    SET /A LEVELS=!LEVELS -8
+    SET /A speechSkill=!speechSkill! +1
+    SET displayMessage=Applied +1 Speech Skill for -8 Levels.
+    GOTO :SKILL_POINTS
 )
-
-REM BUY
-:sellTonics
-CLS
-echo.
-echo                                         J'ZAR ALMANI
-echo                  I have some spare shelf space, if you've got anything of interest...
-echo.
-echo LEVELS: %LEVELS% ^| COINS: %COINS% ^| AFFINITY: %pAffWizard%
-echo %displayMessage%
-echo ========================================================================================================================
-echo [1] HEALTH TONIC ^| [2] STAMINA TONIC ^| [3] MAGICKA TONIC
-echo     90 COINS    ^|     350 COINS     ^|     200 COINS
-echo                         [E] EXIT
-CHOICE /C 123E /N /M ">"
-IF ERRORLEVEL 4 GOTO :dash
-IF ERRORLEVEL 3 GOTO :sell_magicka_tonic
-IF ERRORLEVEL 2 GOTO :sell_stamina_tonic
-IF ERRORLEVEL 1 GOTO :sell_healing_tonic
-
-REM Sell Healing Tonic.
-:sell_healing_tonic
-IF %healingT_q% EQU 0 (
-    GOTO :no_item
-) ELSE (
-    IF %player_affinity_wizard% GEQ 400 (
-        SET /A coins=!coins! +120
-        SET /A healingT_q=!healingT_q! -1
-        SET displayMessage=Sold Healing Tonic for 120, price modified by Affinity.
-        GOTO :sellTonics
-    ) ELSE (
-        SET /A coins=!coins! +90
-        SET /A healingT_q=!healingT_q! -1
-        SET displayMessage=Sold Healing Tonic for 90 coins.
-        GOTO :sellTonics
-    )
-)
-
-REM Sell Stamina Tonic.
-:sell_stamina_tonic
-IF %staminaT_q% EQU 0 (
-    GOTO :no_item
-) ELSE (
-    IF %player_affinity_wizard% GEQ 400 (
-        SET /A coins=!coins! +375
-        SET /A staminaT_q=!staminaT_q! -1
-        SET displayMessage=Sold Stamina Tonic for 375, price modified by Affinity.
-        GOTO :sellTonics
-    ) ELSE (
-        SET /A coins=!coins! +350
-        SET /A staminaT_q=!staminaT_q! -1
-        SET displayMessage=Sold Stamina Tonic for 350 coins.
-        GOTO :sellTonics
-    )
-)
-
-REM Sell Magicka Tonic.
-:sell_magicka_tonic
-IF %magickaT_q% EQU 0 (
-    GOTO :no_item
-) ELSE (
-    IF %player_affinity_wizard% GEQ 400 (
-        SET /A coins=!coins! +280
-        SET /A magickaT_q=!magickaT_q! -1
-        SET displayMessage=Sold Healing Tonic for 280, price modified by Affinity.
-        GOTO :sellTonics
-    ) ELSE (
-        SET /A coins=!coins! +200
-        SET /A magickaT_q=!magickaT_q! -1
-        SET displayMessage=Sold Magicka Tonic for 200 coins.
-        GOTO :sellTonics
-    )
-)
-
-REM Not enough levels.
-:noLevels
-SET displayMessage=You do not have enough levels to increase this skill.
-GOTO :skillPoints
-
-REM Max level reached.
-:maxLevel
-SET displayMessage=Max level reached.
-GOTO :skillPoints
-
-REM Not enough coins.
-:noCoins
-SET displayMessage=You cannot afford this item.
-GOTO :dash
-
-REM You do not have the item to sell.
-:no_item
-SET displayMessage=You cannot sell something you don't have!
-GOTO :dash
-
-REM Wizard is not buying new items.
-:not_buying
-SET displayMessage=This item is not currently being purchased.
-GOTO :dash
-
-REM End of Script, return to Windhelm.
-:EOS
