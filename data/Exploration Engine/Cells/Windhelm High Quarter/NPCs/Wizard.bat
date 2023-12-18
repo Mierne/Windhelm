@@ -27,8 +27,8 @@ ECHO +--------------------------------------------------------------------------
 ECHO ^|                             I believe I can manage this, yes...                                   +
 ECHO ^| %displayMessage%
 ECHO +--------------------------------------------------------------------------------------------------+
-ECHO + Damage Skill: %damageSkill% ^| Stamina Skill: %staminaSkill% ^| Magicka Skill: %magickaSkill%
-ECHO + Speech Skill: %speechSkill%
+ECHO + Damage Skill: %damage_skill% ^| Stamina Skill: %stamina_skill% ^| Magicka Skill: %magicka_skill%
+ECHO + Speech Skill: %speech_skill%
 ECHO +--------------------------------------------------------------------------------------------------+
 ECHO ^| COINS: %coins% ^| LEVELS: %levels% ^| AFFINITY: %player_affinity_wizard%
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -49,16 +49,16 @@ IF ERRORLEVEL 1 GOTO :APPLY_DAMAGE
 
 REM Check for max skill level caps and conflicting levels.
 :APPLY_DAMAGE
-IF %damageSkill% EQU 10 (
+IF %damage_skill% EQU 10 (
     REM Max Skill Level.
     SET displayMessage=Damage Skill is currently at the max level.
     GOTO :SKILL_POINTS
-) ELSE IF %magickaSkill% EQU 8 (
-    IF %damageSkill% LSS 8 (
+) ELSE IF %magicka_skill% EQU 8 (
+    IF %damage_skill% LSS 8 (
         REM Apply damage skill, as it has not yet reached the cap.
         REM Apply [1] skill point for [20] levels.
         SET /A LEVELS=!LEVELS -20
-        SET /A damageSkill=!damageSkill! +1
+        SET /A damage_skill=!damage_skill! +1
         SET displayMessage=Applied +1 Damage Skill for -20 Levels.
     GOTO :SKILL_POINTS
     ) ELSE (
@@ -69,23 +69,23 @@ IF %damageSkill% EQU 10 (
 ) ELSE (
     REM Apply [1] skill point for [20] levels.
     SET /A LEVELS=!LEVELS -20
-    SET /A damageSkill=!damageSkill! +1
+    SET /A damage_skill=!damage_skill! +1
     SET displayMessage=Applied +1 Damage Skill for -20 Levels.
     GOTO :SKILL_POINTS
 )
 
 REM Check for max skill level caps and conflicting levels.
 :APPLY_STAMINA
-IF %staminaSkill% EQU 10 (
+IF %stamina_skill% EQU 10 (
     REM Max Skill Level.
     SET displayMessage=Stamina Skill is currently at the max level.
     GOTO :SKILL_POINTS
-) ELSE IF %magickaSkill% EQU 8 (
-    IF %staminaSkill% LSS 8 (
+) ELSE IF %magicka_skill% EQU 8 (
+    IF %stamina_skill% LSS 8 (
         REM Apply Stamina skill, as it has not yet reached the cap.
         REM Apply [1] skill point for [12] levels.
         SET /A LEVELS=!LEVELS -12
-        SET /A staminaSkill=!staminaSkill! +1
+        SET /A stamina_skill=!stamina_skill! +1
         SET displayMessage=Applied +1 Stamina Skill for -12 Levels.
     GOTO :SKILL_POINTS
     ) ELSE (
@@ -96,22 +96,22 @@ IF %staminaSkill% EQU 10 (
 ) ELSE (
     REM Apply [1] skill point for [12] levels.
     SET /A LEVELS=!LEVELS -12
-    SET /A staminaSkill=!staminaSkill! +1
+    SET /A stamina_skill=!stamina_skill! +1
     SET displayMessage=Applied +1 Stamina Skill for -12 Levels.
     GOTO :SKILL_POINTS
 )
 
 REM Check for max skill level caps and conflicting levels.
 :APPLY_MAGICKA
-IF %magickaSkill% EQU 10 (
+IF %magicka_skill% EQU 10 (
     REM Max Skill Level.
     SET displayMessage=Magicka Skill is currently at the max level.
     GOTO :SKILL_POINTS
-) ELSE IF %damageSkill% EQU 8 (
-    IF %magickaSkill% LSS 8 (
+) ELSE IF %damage_skill% EQU 8 (
+    IF %magicka_skill% LSS 8 (
         REM Apply Magicka skill, as it has not yet reached the cap.
         SET /A LEVELS=!LEVELS -20
-        SET /A magickaSkill=!magickaSkill! +1
+        SET /A magicka_skill=!magicka_skill! +1
         SET displayMessage=Applied +1 Magicka Skill for -20 Levels.
     GOTO :SKILL_POINTS
     ) ELSE (
@@ -122,23 +122,23 @@ IF %magickaSkill% EQU 10 (
 ) ELSE (
     REM Apply [1] skill point for [20] levels.
     SET /A LEVELS=!LEVELS -20
-    SET /A magickaSkill=!magickaSkill! +1
+    SET /A magicka_skill=!magicka_skill! +1
     SET displayMessage=Applied +1 Magicka Skill for -20 Levels.
     GOTO :SKILL_POINTS
 )
 
 REM Check for max skill level caps and conflicting levels.
 :APPLY_SPEECH
-IF %speechSkill% EQU 10 (
+IF %speech_skill% EQU 10 (
     REM Max Skill Level.
     SET displayMessage=Speech Skill is currently at the max level.
     GOTO :SKILL_POINTS
-) ELSE IF %damageSkill% EQU 8 (
-    IF %speechSkill% LSS 8 (
+) ELSE IF %damage_skill% EQU 8 (
+    IF %speech_skill% LSS 8 (
         REM Apply Speech skill, as it has not yet reached the cap.
         REM Apply [1] skill point for [8] levels.
         SET /A LEVELS=!LEVELS -8
-        SET /A speechSkill=!speechSkill! +1
+        SET /A speech_skill=!speech_skill! +1
         SET displayMessage=Applied +1 Speech Skill for -8 Levels.
         GOTO :SKILL_POINTS
     ) ELSE (
@@ -149,7 +149,7 @@ IF %speechSkill% EQU 10 (
 ) ELSE (
     REM Apply [1] skill point for [8] levels.
     SET /A LEVELS=!LEVELS -8
-    SET /A speechSkill=!speechSkill! +1
+    SET /A speech_skill=!speech_skill! +1
     SET displayMessage=Applied +1 Speech Skill for -8 Levels.
     GOTO :SKILL_POINTS
 )
