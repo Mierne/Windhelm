@@ -39,21 +39,16 @@ CHOICE /C 12345E /N /M ">"
 IF ERRORLEVEL 6 GOTO :EOF
 IF ERRORLEVEL 5 GOTO :WFG
 IF ERRORLEVEL 4 GOTO :WMQec
-IF ERRORLEVEL 3 GOTO :WHQec
+IF ERRORLEVEL 3 GOTO :WHQ
 IF ERRORLEVEL 2 GOTO :RWPec
 IF ERRORLEVEL 1 GOTO :WSGec
-
-REM Movement check for WHQ, chance to encounter enemies or NPCs when moving.
-REM This area is contained within the Windhelm Castle, there is (0%) chance to encounter enemies or NPCs.
-:WHQec
-GOTO :WHQ
 
 REM Windhelm High Quarter. Contains the following interactable NPCs:
 REM Wizard, Clarke Blackwell (recruitable NPC)
 :WHQ
 SET LL=WHQ
 REM Call the script that handles this location and it's NPCs.
-CALL "%cd%\data\functions\Exploration Engine\Locations\Windhelm High Quarter\WHQ.bat"
+CALL "%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\WHQ.bat"
 GOTO :%LL%
 
 REM Movement check for RWP, chance to encounter enemies or NPCs when moving.
