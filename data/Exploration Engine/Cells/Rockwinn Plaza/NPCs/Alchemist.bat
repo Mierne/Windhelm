@@ -1,12 +1,22 @@
 @ECHO OFF
 TITLE (Windhelm Castle) Rockwinn Plaza - Alchemist ^| %player_name% the %player_class%
-REM Alchemist Merchant. v1 231217
+REM Alchemist Merchant. v1 231218
+
+REM Check Affinity level and then enable/disable discounts.
+:CA
+IF %player_affinity_alchemist% GEQ 400 (
+    SET alcDA=1
+    GOTO :MAIN_MENU
+) ELSE (
+    SET alcDA=0
+    GOTO :MAIN_MENU
+)
 
 REM Main Menu for the Alchemist, access each sub-shop here.
 :MAIN_MENU
 CLS
 ECHO.
-ECHO                                               Kin'Næi
+ECHO                                               Kin'Naei
 ECHO                   Your kind are... rare. Something to ease the pain, I presume?
 ECHO.
 ECHO COINS: %coins% ^| AFFINITY: %player_affinity_alchemist%
@@ -22,12 +32,6 @@ IF ERRORLEVEL 1 GOTO :BUY_TONICS
 
 REM Alchemist Tonic Shop.
 :BUY_TONICS
-REM If Affinity level is higher than 1, enable discounts.
-IF %player_affinity_alchemist% GEQ 400 (
-    SET alcDA=1
-) ELSE (
-    SET alcDA=0
-)
 CLS
 ECHO type command goes here.
 ECHO +--------------------------------------------------------------------------------------------------+
@@ -168,3 +172,34 @@ IF %alcDA% EQU 1 (
         GOTO :BUY_TONICS
     )
 )
+
+:ALCHEMIST_DIALOGUE
+CLS
+ECHO.
+ECHO                                               Kin'Naei
+ECHO I have some time to spare...
+ECHO.
+ECHO COINS: %coins% ^| AFFINITY: %player_affinity_alchemist%
+ECHO %displayMessage%
+ECHO ========================================================================================================================
+ECHO [1 / What do you know about Shards? ] 
+ECHO [2 / Where do you find ingredients? ] 
+ECHO [3 / What do you know about Memories? ] 
+ECHO [E / BACK ]
+CHOICE /C 123E /N /M ">"
+IF ERRORLEVEL 4 GOTO :MAIN_MENU
+IF ERRORLEVEL 3 GOTO :what_do_you_know_about_memories
+IF ERRORLEVEL 2 GOTO :where_do_you_find_ingredients
+IF ERRORLEVEL 1 GOTO :what_do_you_know_about_shards
+
+REM Shard knowledge question line.
+:what_do_you_know_about_shards
+GOTO :ALCHEMIST_DIALOGUE
+
+REM Ingredients question line.
+:where_do_you_find_ingredients
+GOTO :ALCHEMIST_DIALOGUE
+
+REM Memory knowledge question line.
+:what_do_you_know_about_memories
+GOTO :ALCHEMIST_DIALOGUE
