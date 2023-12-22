@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load Order and initialization Program (SLoP)
-REM Save, Load, Order and initialization Program v1.0 231218 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231222 - For Build 2 "Bottle o' Features"
 
 REM Hardcoded, unchanging variables such as Armor Protection value.
 :HCV
@@ -42,8 +42,11 @@ ECHO %STAMINAMAX%
 ECHO %HPMAX%
 ECHO %player_action_p%
 ECHO %weapon_type%
+ECHO %player_effect_1%
+ECHO %player_effect_2%
 ECHO %player_name%
 ECHO %player_class%
+ECHO %maxStam%
 ECHO %player_damage%
 ECHO %armor_equip%
 ECHO %stamina_equip%
@@ -213,8 +216,11 @@ SET /P STAMINAMAX=
 SET /P HPMAX=
 SET /P player_action_p=
 SET /P weapon_type=
+SET /P player_effect_1=
+SET /P player_effect_2=
 SET /P player_name=
 SET /P player_class=
+SET /P maxStam=
 SET /P player_damage=
 SET /P armor_equip=
 SET /P stamina_equip=
@@ -430,6 +436,8 @@ SET STAMINAMAX=100
 SET HPMAX=100
 SET player_action_p=20
 SET weapon_type=Melee
+SET player_effect_1=None
+SET player_effect_2=None
 REM Used to modify the stamina level when equipping armor and such.
 SET maxStam=100
 SET player_damage=5
