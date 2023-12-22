@@ -1,7 +1,7 @@
 @ECHO OFF
 TITLE ERROR - %errorType%
 COLOR 4F
-REM Error Handler v1.1 231213. For Windhelm Build 2 "Bottle o' Features"
+REM Error Handler v1.1 231222. For Windhelm Build 2 "Bottle o' Features"
 
 REM Check error type
 IF %errorType% == EnemyType (
@@ -10,8 +10,15 @@ IF %errorType% == EnemyType (
     GOTO :ctError
 ) ELSE IF %errorType% == attributeSkill (
     GOTO :aSerror
+) ELSE IF %errorType% == encounterError (
+    GOTO :eError
+) ELSE IF %errorType% == LastLocal (
+    GOTO :llError
 ) ELSE (
-    GOTO :EOF
+    REM ...an error, inside of Error Handler??? Unthinkable!
+    SET errorType=unknownError
+    ECHO Error Handler - Unknown Error. >> ErrorHandler.log
+    EXIT /B
 )
 
 REM Display the "Enemy Type" error.
@@ -36,5 +43,27 @@ ECHO =======================================================
 ECHO This error could mean:
 ECHO The Player has modified their save, attempting to adjust Skill Levels to an undefined integer.
 ECHO This... this is the only way to cause this error. Stop messing with my shit!
+PAUSE
+EXIT /B
+
+:eError
+CLS
+ECHO.
+ECHO Error Encountered - Windhelm has stopped.
+ECHO Error Type: %errorType%
+ECHO =======================================================
+ECHO This could be caused by a corrupted script or save file.
+ECHO If this repeats, email quitefrankish@gmail.com
+PAUSE
+EXIT /B
+
+:llError
+CLS
+ECHO.
+ECHO Error Encountered - Windhelm has stopped.
+ECHO Error Type: %errorType%
+ECHO =======================================================
+ECHO Corrupted or modified save file.
+ECHO If this repeats, email quitefrankish@gmail.com
 PAUSE
 EXIT /B
