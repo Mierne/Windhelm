@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Iridescent Forest (EXPLORE) - Chunk 1
-REM Chunk 1 (231216)
+REM Chunk 1 (231222)
 REM --
 REM Chunk 1 contains low-level enemies, such as the Bandit and Jester.
 REM This chunk also contains several NPCs important to the story, and will help guide the Player.
@@ -93,7 +93,10 @@ IF %E% EQU 1 (
     GOTO :MAIN
 ) ELSE (
     REM Error handling.
-    SET errorType=Explore Error, encounter. >> EE-log.txt
+    SET errorType=encounterError
+    ECHO Encounter Error - Corrupted script or save file. >> EE-Chunk1.log
+    CALL "%cd%\data\functions\Error Handler.bat"
+    EXIT /B
 )
 
 REM Call SLOP and save the game before exiting Exploration Engine.
