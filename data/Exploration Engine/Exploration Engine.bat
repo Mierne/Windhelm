@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Windhelm ^| Exploration Engine ^| Name: %player_name% ^| Class: %player_class%
-REM Exploration Engine v1 (231207)
+REM Exploration Engine v1 (231222)
 REM --
 
 REM Where was the Player last at when the game was saved?
@@ -18,8 +18,11 @@ IF %LL% == WP (
 ) ELSE IF %LL% == WFG (
     GOTO :WFG
 ) ELSE (
-    REM error
-    GOTO :EOF
+    REM LastLocal error.
+    SET errorType=LastLocal
+    ECHO LastLocal Error - corrupted or modified save file possible. >> ExplorationEngine.log
+    CALL "%cd%\data\functions\Error Handler.bat"
+    EXIT /B
 )
 
 REM The "main" area, can access each zone which is attached to this location.
