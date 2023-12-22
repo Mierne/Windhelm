@@ -1,8 +1,8 @@
 @ECHO OFF
 TITLE Combat Engine 7 - "Bottle o' Features"
 MODE con: cols=120 lines=25
-REM Combat Engine 7 (v7.0 231216) - Combat Engine for Build 2 "Bottle o' Features"
-GOTO :T
+REM Combat Engine 7 (v7.0 231222) - Combat Engine for Build 2 "Bottle o' Features"
+
 REM Set enemy names with the location identifier and set the schrodinger's variables.
 SET curEn=%currentEnemy%
 IF %curEn% == iBandit (
@@ -50,7 +50,7 @@ IF %curEn% == iBandit (
 
 REM Enemy Battle Screen. This is the modular part I talked about. btw.
 :EBS
-TITLE CE v7 - %curEn% VS. %player_name% the %player_class%
+TITLE Combat Engine v7 - %curEn% VS. %player_name% the %player_class%
 REM Reset the attack value after armor calculation to prevent negative damage values.
 SET enAT=%enATb%
 REM Win/Lose check.
@@ -222,17 +222,17 @@ IF %PATT% GTR 17 (
     REM Modifies enemy "enHP" variable with a x2 multiplier.
     SET /A enHP=!enHP! -%player_damage%*%damage_skill%*2
     REM Display the following message in the "plrMessage" space.
-    SET plrMessage=Critical hit on the %currentEnemy%!
+    SET plrMessage=Critical hit on the %curEn%!
     GOTO :party_member_preattack_check
 ) ELSE IF %PATT% LSS 5 (
     REM Player attack misses.
-    SET plrMessage=The %currentEnemy% dodged your attack!
+    SET plrMessage=The %curEn% dodged your attack!
     GOTO :party_member_preattack_check
 ) ELSE (
      REM Modifies enemy "enHP" variable.
     SET /A enHP=!enHP! -%player_damage%*%damage_skill%
     REM Display the following message in the "plrMessage" space.
-    SET plrMessage=You hit the %currentEnemy%!
+    SET plrMessage=You hit the %curEn%!
     GOTO :party_member_preattack_check
 )
 
@@ -302,82 +302,76 @@ IF %attack_type% == Ranged (
 )
 IF %AAT% GTR 17 (
     SET /A hp=!hp! -%enAT%*2
-    SET displayMessage=The %currentEnemy% got a crit!
+    SET displayMessage=The %curEn% got a crit!
     GOTO :APR
 ) ELSE IF %AAT% LSS 5 (
-    SET displayMessage=The %currentEnemy% narrowly missed!
+    SET displayMessage=The %curEn% narrowly missed!
     GOTO :APR
 ) ELSE (
     SET /A hp=!hp! -%enAT%
-    SET displayMessage=The %currentEnemy% hit you!
+    SET displayMessage=The %curEn% hit you!
     GOTO :APR
 )
 
-REM "Action Point Regeneration", returns Action Points to the Player based on Damage Skill level.
+REM "Action Point Regeneration"
 :APR
-REM First check if the Player is wearing either the Kite Shield or Guard Armor, if both do NOT stack the buff.
-IF %shd_e% == KiteBuckler (
-    REM Now check skill levels.
-    IF %damage_skill% EQU 6 (
-        REM Return 12 APs to the Player. + kite shield buff.
+IF %player_effect_1% == Poison (
+    IF %stamina_skill% EQU 6 (
+        SET /A player_action_p=!player_action_p! +20
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    ) ELSE IF %stamina_skill% EQU 5 (
         SET /A player_action_p=!player_action_p! +17
+        SET /A player_action_p=!player_action_p! -5
         GOTO :EBS
-    ) ELSE IF %damage_skill% EQU 5 (
-        REM Return 11 APs to the Player.
-        SET /A player_action_p=!player_action_p! +16
+    ) ELSE IF %stamina_skill% EQU 4 (
+        SET /A player_action_p=!player_action_p! +14
+        SET /A player_action_p=!player_action_p! -5
         GOTO :EBS
-    ) ELSE IF %damage_skill% EQU 4 (
-        REM Return 10 APs to the Player.
-        SET /A player_action_p=!player_action_p! +15
-        GOTO :EBS
-    ) ELSE IF %damage_skill% EQU 3 (
-        REM Return 8 APs to the Player.
-        SET /A player_action_p=!player_action_p! +13
-        GOTO :EBS
-    ) ELSE IF %damage_skill% EQU 2 (
-        REM Return 6 APs to the Player.
+    ) ELSE IF %stamina_skill% EQU 3 (
         SET /A player_action_p=!player_action_p! +11
+        SET /A player_action_p=!player_action_p! -5
         GOTO :EBS
-    ) ELSE (
-        REM ERROR HANDLING
-        :T
-        ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
-        ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
-        SET errorType=attributeSkill
-        CALL "%cd%\data\functions\Error Handler.bat"
-        EXIT /B
     )
 ) ELSE (
-    IF %amr_e% == GuardArmor (
-        REM Now check skill levels.
-        IF %damage_skill% EQU 6 (
-            REM Return 12 APs to the Player.
+    IF %player_effect_2% == Poison (
+        IF %stamina_skill% EQU 6 (
+        SET /A player_action_p=!player_action_p! +20
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    ) ELSE IF %stamina_skill% EQU 5 (
+        SET /A player_action_p=!player_action_p! +17
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    ) ELSE IF %stamina_skill% EQU 4 (
+        SET /A player_action_p=!player_action_p! +14
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    ) ELSE IF %stamina_skill% EQU 3 (
+        SET /A player_action_p=!player_action_p! +11
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    ) ELSE (
+        SET /A player_action_p=!player_action_p! +8
+        SET /A player_action_p=!player_action_p! -5
+        GOTO :EBS
+    )
+    ) ELSE (
+        IF %stamina_skill% EQU 6 (
+            SET /A player_action_p=!player_action_p! +20
+            GOTO :EBS
+        ) ELSE IF %stamina_skill% EQU 5 (
             SET /A player_action_p=!player_action_p! +17
             GOTO :EBS
-        ) ELSE IF %damage_skill% EQU 5 (
-            REM Return 11 APs to the Player.
-            SET /A player_action_p=!player_action_p! +16
+        ) ELSE IF %stamina_skill% EQU 4 (
+            SET /A player_action_p=!player_action_p! +14
             GOTO :EBS
-        ) ELSE IF %damage_skill% EQU 4 (
-            REM Return 10 APs to the Player.
-            SET /A player_action_p=!player_action_p! +15
-            GOTO :EBS
-        ) ELSE IF %damage_skill% EQU 3 (
-            REM Return 8 APs to the Player.
-            SET /A player_action_p=!player_action_p! +13
-            GOTO :EBS
-        ) ELSE IF %damage_skill% EQU 2 (
-            REM Return 6 APs to the Player.
+        ) ELSE IF %stamina_skill% EQU 3 (
             SET /A player_action_p=!player_action_p! +11
             GOTO :EBS
-        ) ELSE (
-            REM ERROR HANDLING
-            :T
-            ECHO What? You can't have a skill lower than level 2 or higher than 6... for now... >> CE7-ERROR.txt
-            ECHO ERROR - Achievement Get: How did we get here...? >> CE7-ERROR.txt
-            SET errorType=attributeSkill
-            CALL "%cd%\data\functions\Error Handler.bat"
-            EXIT /B
+        ) ELSE IF %stamina_skill% EQU 2 (
+            SET /A player_action_p=!player_action_p! +8
+            GOTO :EBS
         )
     )
 )
