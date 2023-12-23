@@ -1,12 +1,13 @@
 @ECHO OFF
-TITLE Exploration Engine - Rockwinn Plaza ^| NAME: %player_name% ^| CLASS: %player_class%
-REM RWP.BAT (Rockwinn Plaza Cell) v1 231202
+TITLE (Rockwinn Plaza) - Rockwinn Plaza ^| Name: %player_name% ^| Class: %player_class%
+REM RWP.BAT (Rockwinn Plaza Cell) v1 2312221
 
-REM Unique NPC encounter chance (RARE).
+REM Logic to determine if the Player encounters the Unique NPC in this cell.
 :RNPCE
 SET /A RE=%RANDOM% %%20
 IF %RE% EQU 2 (
-    REM Unique Encounter.
+    REM Success - NPC encountered.
+    REM Check if this NPC has been encountered before - if so, simply ignore it.
     IF %GRMencountered% EQU 1 (
         GOTO :RWP_main
     )
