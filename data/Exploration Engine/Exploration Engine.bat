@@ -1,9 +1,8 @@
 @ECHO OFF
 TITLE Windhelm ^| Exploration Engine ^| Name: %player_name% ^| Class: %player_class%
-REM Exploration Engine v1 (231222)
-REM --
+REM Exploration Engine v1 (231222) for Build 2 "Bottle o' Features"
 
-REM Where was the Player last at when the game was saved?
+REM Last saved position of the Player's Character.
 :LAST_LOCAL
 IF %LL% == WP (
     GOTO :WindhelmPlaza
@@ -25,8 +24,8 @@ IF %LL% == WP (
     EXIT /B
 )
 
-REM The "main" area, can access each zone which is attached to this location.
-REM Attached zones are: Rockwinn Plaza, Windhelm Southern Gate, Windhlem High Quarter.
+REM The Player's starting location, and likely where they'll spend most of their time.
+REM All other locations are accessed from the Windhelm Castle Plaza.
 :WindhelmPlaza
 SET LL=WP
 CLS
@@ -41,10 +40,10 @@ ECHO [4 / Windhelm Mud Quarter ]   ^| [5 / Leave Windhelm ]
 CHOICE /C 12345E /N /M ">"
 IF ERRORLEVEL 6 GOTO :EOF
 IF ERRORLEVEL 5 GOTO :WFG
-IF ERRORLEVEL 4 GOTO :WMQec
+IF ERRORLEVEL 4 GOTO :WMQ
 IF ERRORLEVEL 3 GOTO :WHQ
-IF ERRORLEVEL 2 GOTO :RWPec
-IF ERRORLEVEL 1 GOTO :WSGec
+IF ERRORLEVEL 2 GOTO :RWP
+IF ERRORLEVEL 1 GOTO :WSG
 
 REM Windhelm High Quarter. Contains the following interactable NPCs:
 REM Wizard, Clarke Blackwell (recruitable NPC)
@@ -53,11 +52,6 @@ SET LL=WHQ
 REM Call the script that handles this location and it's NPCs.
 CALL "%cd%\data\Exploration Engine\Cells\Windhelm High Quarter\WHQ.bat"
 GOTO :%LL%
-
-REM Movement check for RWP, chance to encounter enemies or NPCs when moving.
-REM This area is contained within the Windhelm Castle, there is (0%) chance to encounter enemies or NPCs.
-:RWPec
-GOTO :RWP
 
 :RWP
 SET LL=RWP
@@ -72,7 +66,7 @@ IF %LL% == RTW (
 
 REM Movement check for WSG, chance to encounter enemies or NPCs when moving.
 REM This area is contained within the Windhelm Castle, there is (0%) chance to encounter enemies or NPCs.
-:WSGec
+:WSG
 SET LL=WSG
 REM Call the script that handles this location and it's NPCs.
 CALL "%cd%\data\functions\Exploration Engine\Locations\Windhelm Southern Gate\WSG.bat"
@@ -80,7 +74,7 @@ GOTO :%LL%
 
 REM Movement check for WMQ, chance to encounter enemies or NPCs when moving.
 REM This area is contained within the Windhelm Castle, there is a (0%) chance to encounter enemies or NPCs.
-:WMQec
+:WMQ
 CALL "%cd%\data\functions\Exploration Engine\Locations\Windhelm Mud Quarter.WMQ.bat"
 GOTO :%LL%
 
