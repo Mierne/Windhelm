@@ -1,6 +1,8 @@
 @ECHO OFF
-TITLE (Rockwinn Plaza) - The Armorer ^| Name: %player_name% ^| Class: %player_class%
-REM Armorer v2.0 231222 - For Windhelm Build 2 "Bottle 'o Features"
+TITLE (Rockwinn Plaza) - The Armorer ^| Name: %player_name% the %player_class%
+REM Armorer v2.0 231223 - For Windhelm Build 2 "Bottle 'o Features"
+REM Checks for Affinity come later, I can't be assed right now!!
+
 
 REM Main Menu, used to access submenus.
 :MM
@@ -34,7 +36,7 @@ IF ERRORLEVEL 3 GOTO :buy_steel_armor
 IF ERRORLEVEL 2 GOTO :buy_stone_armor
 IF ERRORLEVEL 1 GOTO :buy_cactus_armor
 
-REM Buy Cactus Armor store logic
+REM Buy Cactus Armor store logic.
 :buy_cactus_armor
 REM Check if the item is available.
 IF %cactusArmor_s% EQU 0 (
@@ -53,6 +55,167 @@ IF %cactusArmor_s% EQU 0 (
         SET /A cactusArmor_s=!cactusArmor_s! -1
         SET /A cactusA_q=!cactusA_q! +1
         SET displayMessage=Purchased 1 Cactus Armor for %cactusArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Stone Armor store logic.
+:buy_stone_armor
+REM Check if the item is available.
+IF %stoneArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %stoneArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%stoneArmor_p%
+        SET /A stoneArmor_s=!stoneArmor_s! -1
+        SET /A stoneA_q=!stoneA_q! +1
+        SET displayMessage=Purchased 1 Stone Armor for %stoneArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Steel Armor store logic.
+:buy_steel_armor
+REM Check if the item is available.
+IF %steelArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %steelArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%steelArmor_p%
+        SET /A steelArmor_s=!steelArmor_s! -1
+        SET /A steelA_q=!steelA_q! +1
+        SET displayMessage=Purchased 1 Steel Armor for %steelArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Scaled Armor store logic.
+:buy_scaled_armor
+REM Check if the item is available.
+IF %scaledArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %scaledArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%scaledArmor_p%
+        SET /A scaledArmor_s=!scaledArmor_s! -1
+        SET /A scaledA_q=!scaledA_q! +1
+        SET displayMessage=Purchased 1 Scaled Armor for %scaledArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Iron Armor store logic.
+:buy_iron_armor
+REM Check if the item is available.
+IF %ironArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %ironArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%ironArmor_p%
+        SET /A ironArmor_s=!ironArmor_s! -1
+        SET /A ironA_q=!ironA_q! +1
+        SET displayMessage=Purchased 1 Iron Armor for %ironArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Leather Armor store logic.
+:buy_leather_armor
+REM Check if the item is available.
+IF %leatherArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %leatherArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%leatherArmor_p%
+        SET /A leatherArmor_s=!leatherArmor_s! -1
+        SET /A leatherA_q=!leatherA_q! +1
+        SET displayMessage=Purchased 1 Leather Armor for %leatherArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Silver Armor store logic.
+:buy_silver_armor
+REM Check if the item is available.
+IF %silverArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %silverArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%silverArmor_p%
+        SET /A silverArmor_s=!silverArmor_s! -1
+        SET /A silverA_q=!silverA_q! +1
+        SET displayMessage=Purchased 1 Silver Armor for %silverArmor_p%.
+        GOTO :MM
+    )
+)
+
+REM Buy Gold Armor store logic.
+:buy_gold_armor
+REM Check if the item is available.
+IF %goldArmor_s% EQU 0 (
+    REM This item is out of stock.
+    SET displayMessage=Afraid I'm out of that item at the moment.
+    GOTO :MM
+) ELSE (
+    REM Check if the Player can afford this item.
+    IF %coins% LSS %goldArmor_p% (
+        REM The Player cannot afford this item.
+        SET displayMessage=Sorry, you can't afford this.
+        GOTO :MM
+    ) ELSE (
+        REM Take [1] from the Merchant's stock, and add [1] to the Player's inventory, then deduct the price.
+        SET /A coins=!coins! -%goldArmor_p%
+        SET /A goldArmor_s=!goldArmor_s! -1
+        SET /A goldA_q=!goldA_q! +1
+        SET displayMessage=Purchased 1 Gold Armor for %goldArmor_p%.
         GOTO :MM
     )
 )
