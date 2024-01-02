@@ -1,6 +1,6 @@
 @ECHO OFF
 TITLE Save, Load Order and initialization Program (SLoP)
-REM Save, Load, Order and initialization Program v1.0 231222 - For Build 2 "Bottle o' Features"
+REM Save, Load, Order and initialization Program v1.0 231223 - For Build 2 "Bottle o' Features"
 
 REM Hardcoded, unchanging variables such as Armor Protection value.
 :HCV
@@ -125,6 +125,10 @@ ECHO %stoneA_q%
 ECHO %steelA_q%
 ECHO %scaledA_q%
 ECHO %guardA_q%
+ECHO %ironA_q%
+ECHO %leatherA_q%
+ECHO %silverA_q%
+ECHO %goldA_q%
 ECHO %bRobes_q%
 ECHO %iRobes_q%
 ECHO %aRobes_q%
@@ -300,6 +304,10 @@ SET /P stoneA_q=
 SET /P steelA_q=
 SET /P scaledA_q=
 SET /P guardA_q=
+SET /P ironA_q=
+SET /p leatherA_q=
+SET /P silverA_q=
+SET /P goldA_q=
 SET /P bRobes_q=
 SET /P iRobes_q=
 SET /P aRobes_q=
@@ -519,6 +527,10 @@ SET stoneA_q=0
 SET steelA_q=0
 SET scaledA_q=0
 SET guardA_q=0
+SET ironA_q=0
+SET leatherA_q=0
+SET silverA_q=0
+SET goldA_q=0
 SET bRobes_q=0
 SET iRobes_q=0
 SET aRobes_q=0
